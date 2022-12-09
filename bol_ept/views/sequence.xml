@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="seq_bol_product_sync_job" model="ir.sequence">
+        <field name="name">Bol Product Sync Job Sequence</field>
+        <field name="code">bol.product.sync.process.job</field>
+        <field name="padding">5</field>
+        <field name="prefix">PRSYC</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="sequence_bol_orders_ept" model="ir.sequence">
+        <field name="name">Bol Orders</field>
+        <field name="code">bol.order.data.queue</field>
+        <field name="active">TRUE</field>
+        <field name="prefix">BOL</field>
+        <field name="padding">6</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="sequence_bol_shipped_data_ept" model="ir.sequence">
+        <field name="name">Bol Shipped Data</field>
+        <field name="code">bol.shipped.data.queue.ept</field>
+        <field name="active">TRUE</field>
+        <field name="prefix">BOLS</field>
+        <field name="padding">6</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_bol_shipped_order_data_queue_line_ept_form" model="ir.ui.view">
+        <field name="name">bol.shipped.order.data.queue.line.ept.form</field>
+        <field name="model">bol.shipped.data.queue.line.ept</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0" delete="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="bol_instance_id" readonly="1"/>
+                            <field string="Order Data ID" name="bol_order_id" readonly="1"/>
+                            <field name="processed_at"/>
+                        </group>
+                        <group>
+                            <field name="bol_shipped_order_queue_id" readonly="1"/>
+                            <field name="sale_order_id" readonly="1"/>
+                            <field name="state" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Log Lines">
+                            <field name="bol_shipped_common_log_lines_ids">
+                                <tree create="false" editable="bottom">
+                                    <field name="bol_shipped_order_queue_line_id"/>
+                                    <field name="message"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Order Data">
+                            <group>
+                                <field string="Order Data" name="bol_shipped_data"
+                                       readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

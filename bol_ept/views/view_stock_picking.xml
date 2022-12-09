@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_bol_ept" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="carrier_id" position="before">
+                <field name="bol_instance_id" invisible="1"/>
+            </field>
+            <field name="carrier_tracking_ref" position="attributes">
+                <attribute name="attrs">
+                    {'required':[('bol_fulfillment_by','=','FBR')],'readonly':[('state','=','done')]}
+                </attribute>
+            </field>
+            <xpath expr="//notebook" position="inside">
+                <page string="Bol Info" attrs="{'invisible':[('bol_instance_id','=',False)]}">
+                    <group>
+                        <group>
+                            <field name="bol_shipment_id" readonly="1"/>
+                            <field name="bol_fulfillment_by"/>
+                            <field name="bol_instance_id"
+                                   options="{'no_create':True,'no_open':True}" readonly="1"/>
+                            <field name="bol_trasport_id"
+                                   attrs="{'invisible':[('bol_fulfillment_by','!=','FBR')]}"
+                                   readonly="1"/>
+                        </group>
+                        <group attrs="{'invisible':[('bol_fulfillment_by','=','FBB')]}">
+                            <field name="updated_in_bol"
+                                   attrs="{'readonly':[('process_status','not in',['FAILURE','TIMEOUT'])]}"/>
+                            <field name="process_status" readonly="1"/>
+                            <field name="bol_process_status_id" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_bol_fbr_picking_view"
+            model="ir.actions.act_window">
+        <field name="name">FBR Delivery Orders</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">
+            [('is_bol_delivery_order','=','True'),('bol_fulfillment_by','=','FBR')]
+        </field>
+        <field name="search_view_id"
+               ref="stock.view_picking_internal_search"/>
+    </record>
+
+    <record id="action_bol_fbb_picking_view"
+            model="ir.actions.act_window">
+        <field name="name">FBB Delivery Orders</field>
+        <field name="res_model">stock.picking</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">
+            [('is_bol_delivery_order','=','True'),('bol_fulfillment_by','=','FBB')]
+        </field>
+        <field name="search_view_id"
+               ref="stock.view_picking_internal_search"/>
+    </record>
+
+    <menuitem id="bol_menu_item_delivery_orders" name="Delivery Orders"
+              parent="bol_ept.bol_menu_item_sales" sequence="3"/>
+
+    <menuitem id="menuitem_bol_fbr_delivery" name="FBR"
+              parent="bol_ept.bol_menu_item_delivery_orders" sequence="1"
+              action="bol_ept.action_bol_fbr_picking_view"
+              groups="bol_ept.group_bol_fbr_ept,bol_ept.group_bol_fbr_and_fbb_ept"/>
+
+    <menuitem id="menuitem_bol_fbb_delivery" name="FBB"
+              parent="bol_ept.bol_menu_item_delivery_orders"
+              action="bol_ept.action_bol_fbb_picking_view"
+              groups="bol_ept.group_bol_fbb_ept,bol_ept.group_bol_fbr_and_fbb_ept"
+              sequence="2"/>
+</odoo>

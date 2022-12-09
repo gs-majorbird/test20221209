@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_bol_fbr_cron_configuration_ept"
+            model="ir.ui.view">
+        <field name="name">FBR Cron Configuration</field>
+        <field name="model">bol.cron.configuration.ept</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <form string="FBR Configuration">
+                <sheet>
+                    <field name="bol_instance_id" invisible="1" force_save="1"/>
+                    <field name="bol_fulfillment_by" invisible="1" force_save="1"/>
+                    <div name="bol_operations">
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="bol_auto_import_fbr_order"
+                                           help="If Ticked,FBR Open Order will be automatically Imported and process by system from BOl."/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_auto_import_fbr_order"/>
+                                    <div class="text-muted">
+                                        Automatic scheduler for FBR order import
+                                    </div>
+                                </div>
+                                <div>
+                                    <field name="bol_order_import_interval_number"
+                                           attrs="{'required': [('bol_auto_import_fbr_order', '=', True)],
+                                            'invisible': [('bol_auto_import_fbr_order', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="bol_order_import_interval_type"
+                                           attrs="{'required': [('bol_auto_import_fbr_order', '=', True)],
+                                            'invisible': [('bol_auto_import_fbr_order', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="bol_order_next_execution"
+                                           attrs="{'required': [('bol_auto_import_fbr_order', '=', True)],
+                                            'invisible': [('bol_auto_import_fbr_order', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="bol_order_import_user_id"
+                                           attrs="{'required': [('bol_auto_import_fbr_order', '=', True)],
+                                           'invisible': [('bol_auto_import_fbr_order', '=', False)]}"
+                                           class="oe_inline"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="bol_auto_update_order_status"
+                                           help="If Ticked,FBR Open Order will be automatically Imported and process by system from BOl."/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_auto_update_order_status"/>
+                                    <div class="text-muted">
+                                        Automatic scheduler for FBR order Status update
+                                    </div>
+                                </div>
+                                <div>
+                                    <field name="update_status_interval_number"
+                                           attrs="{'required': [('bol_auto_update_order_status', '=', True)],
+                                            'invisible': [('bol_auto_update_order_status', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="update_status_interval_type"
+                                           attrs="{'required': [('bol_auto_update_order_status', '=', True)],
+                                            'invisible': [('bol_auto_update_order_status', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="update_status_next_execution"
+                                           attrs="{'required': [('bol_auto_update_order_status', '=', True)],
+                                            'invisible': [('bol_auto_update_order_status', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="update_status_user_id"
+                                           attrs="{'required': [('bol_auto_update_order_status', '=', True)],
+                                           'invisible': [('bol_auto_update_order_status', '=', False)]}"
+                                           class="oe_inline"/>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="bol_auto_export_stock"
+                                           help="If Ticked, Product will be automatically exported by system from Odoo."/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_auto_export_stock"/>
+                                    <div class="text-muted">
+                                        Automatic scheduler for stock export
+                                    </div>
+                                </div>
+                                <div>
+                                    <field name="export_stock_interval_number"
+                                           attrs="{'required': [('bol_auto_export_stock', '=', True)],
+                                               'invisible': [('bol_auto_export_stock', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="export_stock_interval_type"
+                                           attrs="{'required': [('bol_auto_export_stock', '=', True)],
+                                               'invisible': [('bol_auto_export_stock', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="export_stock_next_execution"
+                                           attrs="{'required': [('bol_auto_export_stock', '=', True)],
+                                               'invisible': [('bol_auto_export_stock', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="export_stock_user_id"
+                                           attrs="{'required': [('bol_auto_export_stock', '=', True)],
+                                               'invisible': [('bol_auto_export_stock', '=', False)]}"
+                                           class="oe_inline"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer>
+                        <button string="Save Configuration"
+                                class="oe_highlight" type="object"
+                                name="setup_fbr_schedular"/>
+                        <button string="Cancel" class="oe_highlight"
+                                special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_wizard_for_open_fbr_cron_configuration"
+            model="ir.actions.act_window">
+        <field name="name">FBR Cron Configuration</field>
+        <field name="res_model">bol.cron.configuration.ept</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="bol_ept.view_bol_fbr_cron_configuration_ept"/>
+    </record>
+
+    <record id="view_bol_fbb_cron_configuration_ept"
+            model="ir.ui.view">
+        <field name="name">FBB Cron Configuration</field>
+        <field name="model">bol.cron.configuration.ept</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <form string="FBB Cron Configuration">
+                <sheet>
+                    <field name="bol_instance_id" invisible="1" force_save="1"/>
+                    <field name="bol_fulfillment_by" invisible="1" force_save="1"/>
+                    <div name="bol_operations">
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="bol_auto_import_fbb_order"
+                                           help="If Ticked, Order will be automatically Imported and process by system from BOl."/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_auto_import_fbb_order"/>
+                                    <div class="text-muted">
+                                        Automatic scheduler for FBB order import
+                                    </div>
+                                </div>
+                                <div>
+                                    <field name="bol_fbb_order_import_interval_number"
+                                           attrs="{'required': [('bol_auto_import_fbb_order', '=', True)],
+                                            'invisible': [('bol_auto_import_fbb_order', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="bol_fbb_order_import_interval_type"
+                                           attrs="{'required': [('bol_auto_import_fbb_order', '=', True)],
+                                            'invisible': [('bol_auto_import_fbb_order', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="bol_fbb_order_next_execution"
+                                           attrs="{'required': [('bol_auto_import_fbb_order', '=', True)],
+                                            'invisible': [('bol_auto_import_fbb_order', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="bol_fbb_order_import_user_id"
+                                           attrs="{'required': [('bol_auto_import_fbb_order', '=', True)],
+                                           'invisible': [('bol_auto_import_fbb_order', '=', False)]}"
+                                           class="oe_inline"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer>
+                        <button string="Save Configuration"
+                                class="oe_highlight" type="object"
+                                name="setup_fbb_schedulars"/>
+                        <button string="Cancel" class="oe_highlight"
+                                special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_wizard_for_open_fbb_cron_configuration"
+            model="ir.actions.act_window">
+        <field name="name">FBB Cron Configuration</field>
+        <field name="res_model">bol.cron.configuration.ept</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="bol_ept.view_bol_fbb_cron_configuration_ept"/>
+    </record>
+
+    <record id="view_bol_fbr_and_fbb_cron_configuration_ept"
+            model="ir.ui.view">
+        <field name="name">FBR Cron Configuration</field>
+        <field name="model">bol.cron.configuration.ept</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <form string="Export Price">
+                <sheet>
+                    <field name="bol_instance_id" invisible="1" force_save="1"/>
+                    <field name="bol_fulfillment_by" invisible="1" force_save="1"/>
+                    <div name="bol_operations">
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="auto_import_process_bol_shipment"
+                                           help="If Ticked, Order will be automatically Imported and process by system from BOl."/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="auto_import_process_bol_shipment"/>
+                                    <div class="text-muted">
+                                        Automatic schedular for Import shipment.
+                                    </div>
+                                </div>
+                                <div>
+                                    <field name="import_process_shipment_interval_number"
+                                           attrs="{'required': [('auto_import_process_bol_shipment', '=', True)],
+                                            'invisible': [('auto_import_process_bol_shipment', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="import_process_shipment_interval_type"
+                                           attrs="{'required': [('auto_import_process_bol_shipment', '=', True)],
+                                            'invisible': [('auto_import_process_bol_shipment', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="import_process_shipment_next_execution"
+                                           attrs="{'required': [('auto_import_process_bol_shipment', '=', True)],
+                                            'invisible': [('auto_import_process_bol_shipment', '=', False)]}"
+                                           class="oe_inline"/>
+                                    <field name="import_process_shipment_user_id"
+                                           attrs="{'required': [('auto_import_process_bol_shipment', '=', True)],
+                                           'invisible': [('auto_import_process_bol_shipment', '=', False)]}"
+                                           class="oe_inline"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer>
+                        <button string="Save Configuration"
+                                class="oe_highlight" type="object"
+                                name="setup_both_schedular"/>
+                        <button string="Cancel" class="oe_highlight"
+                                special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_wizard_for_open_fbr_and_fbb_cron_configuration"
+            model="ir.actions.act_window">
+        <field name="name">FBR/FBB Cron Configuration</field>
+        <field name="res_model">bol.cron.configuration.ept</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="bol_ept.view_bol_fbr_and_fbb_cron_configuration_ept"/>
+    </record>
+
+</odoo>

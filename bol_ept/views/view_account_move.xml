@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_bol_fbr_invoices"
+            model="ir.actions.act_window">
+        <field name="name">Invoice</field>
+        <field name="res_model">account.move</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">
+            [('bol_fulfillment_by','=','FBR')]
+        </field>
+        <field name="search_view_id"
+               ref="account.view_account_invoice_filter"/>
+    </record>
+
+    <record id="action_bol_fbb_invoice_view"
+            model="ir.actions.act_window">
+        <field name="name">Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">
+            [('bol_fulfillment_by','=','FBB')]
+        </field>
+        <field name="search_view_id"
+               ref="account.view_account_invoice_filter"/>
+    </record>
+
+    <menuitem id="bol_menu_item_account_move" name="Invoices"
+              parent="bol_ept.bol_menu_item_sales" sequence="4"/>
+
+    <menuitem id="menuitem_bol_fbr_invoice" name="FBR"
+              parent="bol_ept.bol_menu_item_account_move" sequence="1"
+              action="bol_ept.action_bol_fbr_invoices"
+              groups="bol_ept.group_bol_fbr_ept,bol_ept.group_bol_fbr_and_fbb_ept"/>
+
+    <menuitem id="menuitem_bol_fbb_invoice" name="FBB"
+              parent="bol_ept.bol_menu_item_account_move"
+              action="bol_ept.action_bol_fbb_invoice_view"
+              groups="bol_ept.group_bol_fbb_ept,bol_ept.group_bol_fbr_and_fbb_ept"
+              sequence="2"/>
+</odoo>

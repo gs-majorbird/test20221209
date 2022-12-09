@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bol_instance_ept,bol.instance.ept,model_bol_instance_ept,,1,1,1,1
+access_bol_instance_config_ept,bol.instance.config.ept,model_bol_instance_config_ept,,1,1,1,1
+access_bol_prepare_product_for_export_ept,bol.prepare.product.for.export.ept,model_bol_prepare_product_for_export_ept,,1,1,1,1
+access_bol_process_import_export_ept,bol.process.import.export.ept,model_bol_process_import_export_ept,,1,1,1,1
+access_bol_offer_ept,bol.offer.ept,model_bol_offer_ept,,1,1,1,1
+access_bol_product_sync_ept,access_bol_product_sync_ept,model_bol_product_sync_ept,,1,1,1,1
+access_bol_queue_ept,access_bol_queue_ept,model_bol_queue_ept,,1,1,1,1
+access_bol_order_data_queue_line_ept,access_bol_order_data_queue_line_ept,model_bol_order_data_queue_line_ept,,1,1,1,1
+access_bol_shipped_data_queue_ept,access_bol_shipped_data_queue_ept,model_bol_shipped_data_queue_ept,,1,1,1,1
+access_bol_shipped_data_queue_line_ept,access_bol_shipped_data_queue_line_ept,model_bol_shipped_data_queue_line_ept,,1,1,1,1
+access_bol_delivery_carrier_code_ept,access_bol_delivery_carrier_code_ept,model_bol_delivery_carrier_code_ept,,1,1,1,1
+access_bol_cron_configuration_ept,access_bol_cron_configuration_ept,model_bol_cron_configuration_ept,,1,1,1,1
+access_bol_onboarding_confirmation_ept,access_bol_onboarding_confirmation_ept,model_bol_onboarding_confirmation_ept,,1,1,1,1

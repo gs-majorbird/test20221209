@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_bol_stock_waehouse_form_ept" model="ir.ui.view">
+            <field name="name">stock.bol.warehouse.form.ept</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse" />
+            <field name="groups_id" eval="[(4, ref('bol_ept.group_bol_user_ept'))]"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="is_fbb_warehouse"/>
+                    <field name="bol_unsaleable_location_id"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

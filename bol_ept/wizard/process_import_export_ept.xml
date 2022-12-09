@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bol_process_import_export_ept" model="ir.ui.view">
+        <field name="name">Process Import/Export</field>
+        <field name="model">bol.process.import.export.ept</field>
+        <field name="priority">11</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="instance_id" required="1"
+                                   options="{'no_create':True,'no_create_edit':True,'no_open': True}"/>
+                            <field name="fulfilment_by" required="1"/>
+                            <field name="both_operations"
+                                   attrs="{'invisible':[('fulfilment_by','!=','fbr_fbb')], 'required':[('fulfilment_by','=','fbr_fbb')]}"/>
+                            <field name="fbb_operations"
+                                   attrs="{'invisible':[('fulfilment_by','!=','fbb')], 'required':[('fulfilment_by','=','fbb')]}"
+                                   groups="bol_ept.group_bol_fbb_ept,bol_ept.group_bol_fbr_and_fbb_ept"/>
+                            <field name="fbr_operations"
+                                   attrs="{'invisible':[('fulfilment_by','!=','fbr')], 'required':[('fulfilment_by','=','fbr')]}"
+                                   groups="bol_ept.group_bol_fbr_ept,bol_ept.group_bol_fbr_and_fbb_ept"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <group>
+                        <div name="msg_opr_main">
+                            <div attrs="{'invisible':[('fbr_operations','!=','import_fbr_order')]}">
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <u>
+                                            <h3 style="font-weight:bold;color:#7d5a29">Note :
+                                            </h3>
+                                        </u>
+                                        <ol>
+                                            <li>
+                                                Sync FBR open orders from Bol.com and add the
+                                                data in the Queue. (Bol.com > Processes > Queues
+                                                > Orders)
+                                            </li>
+                                            <li>
+                                                A Scheduled/Cron Job, running in background will
+                                                start processing Queues one by one.
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                            <div attrs="{'invisible':[('fbr_operations','!=','update_order_status')]}">
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <u>
+                                            <h3 style="font-weight:bold;color:#7d5a29">Note :</h3>
+                                        </u>
+                                        <ol>
+                                            <li>
+                                                The Update Order Status allows you to update
+                                                order tracking information of FBR orders to Bol.com
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                            <div attrs="{'invisible':[('fbr_operations','!=','export_stock_from_odoo_to_bol')]}">
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <u>
+                                            <h3 style="font-weight:bold;color:#7d5a29">Note :
+                                            </h3>
+                                        </u>
+                                        <ol>
+                                            <li>
+                                                Export stock allows to export product stock to
+                                                Bol.com for Selected Instance.
+                                            </li>
+                                            <li>
+                                                Stock will be exported from warehouses as per the
+                                                configuration
+                                                under Bol.com > Configuration > FBR Warehouse.
+                                            </li>
+                                            <li>
+                                                It will export only those product stock which is
+                                                synced with Bol.com
+                                            </li>
+                                            <li>
+                                                It will try to export stock of those products
+                                                whose stock
+                                                is updated since last execution of
+                                                this operation.
+                                            </li>
+                                            <li>
+                                                If last execution details are not available, it
+                                                will
+                                                consider those products whose stock is
+                                                updated since last 30
+                                                days.
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                            <div attrs="{'invisible':[('fbb_operations','!=','import_fbb_order')]}">
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <u>
+                                            <h3 style="font-weight:bold;color:#7d5a29">Note :
+                                            </h3>
+                                        </u>
+                                        <ol>
+                                            <li>
+                                                Sync FBB open orders from Bol.com and add the
+                                                data in the Queue. (Bol.com > Processes > Queues
+                                                > Orders)
+                                            </li>
+                                            <li>
+                                                A Scheduled/Cron Job, running in background will
+                                                start processing Queues one by one.
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                            <div attrs="{'invisible':[('fbb_operations','!=','import_fbb_stock')]}">
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <u>
+                                            <h3 style="font-weight:bold;color:#7d5a29">Note :
+                                            </h3>
+                                        </u>
+                                        <ol>
+                                            <li>
+                                                Import FBB stock allows to import FBB inventory
+                                                from Bol.com to Odoo.
+                                            </li>
+                                            <li>
+                                                Stock will be imported to FBB warehouse as per the
+                                                configuration under
+                                                Bol.com > Configuration > FBB Warehouse
+                                            </li>
+                                            <li>
+                                                This operation will generate Inventory
+                                                Adjustment record under Inventory >
+                                                Operations > Inventory Adjustments.
+                                            </li>
+                                            <li>Inventory Adjustment record will be processed
+                                                based on the configuration 'Auto Validate'.
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                            <div attrs="{'invisible':[('both_operations','!=','sync_product')]}">
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <u>
+                                            <h3 style="font-weight:bold;color:#7d5a29">Note :
+                                            </h3>
+                                        </u>
+                                        <ol>
+                                            <li>
+                                                This operation allows you to Bol.com product report.
+                                            </li>
+                                            <li>
+                                                You need to Process product report under Bol.com
+                                                > Products > Sync Product. You can sync Bol Offer
+                                                after process that report.
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                            <div attrs="{'invisible':[('both_operations','!=','import_shipment')]}">
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <u>
+                                            <h3 style="font-weight:bold;color:#7d5a29">Note :
+                                            </h3>
+                                        </u>
+                                        <ol>
+                                            <li>
+                                                This Operation allows you to import all shipment
+                                                from the Bol.com
+                                            </li>
+                                            <li>
+                                                It will import shipment for All open orders and
+                                                Process it in Odoo.
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                            <div attrs="{'invisible':[('both_operations','!=','import_shipped_order')]}">
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <u>
+                                            <h3 style="font-weight:bold;color:#7d5a29">Note :
+                                            </h3>
+                                        </u>
+                                        <ol>
+                                            <li>
+                                                This Operation allows you to Import Shipped order of
+                                                last 90 days.
+                                            </li>
+                                            <li>By Perform this Operation, System will activate
+                                                Automatic Schedular :
+                                                <b>Bol.Com : Import Shipped Order Queue</b>
+                                            </li>
+                                            <li>This Schedular will create shipped order queue
+                                                in the system and That queue will be processed
+                                                via Automatic Schedulars.
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                            <div attrs="{'invisible':[('both_operations','!=','export_prices')]}">
+                                <p colspan="2" class="alert alert-warning" role="alert">
+                                    <b>
+                                        <u>
+                                            <h3 style="font-weight:bold;color:#7d5a29">Note :
+                                            </h3>
+                                        </u>
+                                        <ol>
+                                            <li>
+                                                This Operation Allows you to export Product price to
+                                                Bol.com
+                                            </li>
+                                            <li>
+                                                Price will be calculate based on the configuration
+                                                under Bol.com > Configuration > Settings.
+                                            </li>
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                            <div attrs="{'invisible':[('cron_process_notification','=',False)]}">
+                                <p colspan="2" class="alert alert-info" role="alert">
+                                    <b>
+                                        <ol>
+
+                                            <field name="cron_process_notification" readonly="1"/>
+
+                                        </ol>
+                                    </b>
+                                </p>
+                            </div>
+                        </div>
+                    </group>
+                    <notebook
+                            attrs="{'invisible': [('both_operations', 'not in', ['sync_product','import_orders_by_order_ids','map_offers_via_csv'])]}">
+                        <page string="Options">
+                            <group attrs="{'invisible': [('both_operations', '!=', 'sync_product')]}">
+                                <group>
+                                    <field name="auto_create_product"/>
+                                    <field name="update_price_in_pricelist"/>
+                                </group>
+                                <group>
+                                    <field name="sync_single_offer"/>
+                                    <field name="offer_id"
+                                           attrs="{'invisible': [('sync_single_offer', '=', False)],'required': [('sync_single_offer', '=', True)]}"/>
+                                </group>
+                            </group>
+                            <group name='import_order_based_on_order_ids'
+                                   attrs="{'invisible':[('both_operations','!=', 'import_orders_by_order_ids')]}">
+                                <field name='bol_order_ids' string="Order IDs"
+                                       attrs="{'required':[('both_operations','=','import_orders_by_order_ids')]}"/>
+                            </group>
+                            <group name="map_offers_via_csv"
+                                   attrs="{'invisible':[('both_operations','!=','map_offers_via_csv')]}">
+                                <field name="file_name" invisible="1"/>
+                                <field name="csv_file" filename="file_name" string="Choose File"/>
+                                <group>
+                                    <button string="Download Sample Attachment"
+                                            name="download_sample_attachment" type="object"
+                                            class="btn-primary"
+                                            attrs="{'invisible':[('both_operations','!=','map_offers_via_csv')]}"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <field name="is_hide_operation_execute_button" invisible="1"/>
+                    <button string="Execute" class="oe_highlight" type="object" name="execute"
+                            attrs="{'invisible':[('is_hide_operation_execute_button','=', True)]}"/>
+                    <button string="Cancel" class="oe_highlight" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Below view used from Bol product layer products to export stock-->
+    <record id="view_bol_stock_export_manually"
+            model="ir.ui.view">
+        <field name="name">Export Stock manual</field>
+        <field name="model">bol.process.import.export.ept</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <form string="Export Stock">
+                <sheet>
+                    <group name='bol_export_stock_manually'>
+                        <div style="color:#000000">
+                            <p class="alert alert-warning" role="alert">
+                                <u>
+                                    <h3 style="font-weight:bold;color:#7d5a29">Note :</h3>
+                                </u>
+                                <b>
+                                    <ol>
+                                        <li>
+                                            This process will export selected Product(s)
+                                            Stock from
+                                            Odoo to Bol.com store, as per the
+                                            configuration of stock field
+                                            under Bol.com instance
+                                            configurations.
+                                        </li>
+                                    </ol>
+                                </b>
+                            </p>
+                        </div>
+                    </group>
+                    <footer>
+                        <button string="Export Stock Manually"
+                                class="oe_highlight" type="object"
+                                name="bol_selective_offers_stock_export"/>
+                        <button string="Cancel" class="oe_highlight"
+                                special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Below view used from Bol product layer products to export price-->
+    <record id="view_bol_price_export_manually"
+            model="ir.ui.view">
+        <field name="name">Export Price manual</field>
+        <field name="model">bol.process.import.export.ept</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <form string="Export Price">
+                <sheet>
+                    <group name='bol_export_price_manually'>
+                        <div style="color:#000000">
+                            <p class="alert alert-warning" role="alert">
+                                <u>
+                                    <h3 style="font-weight:bold;color:#7d5a29">Note :</h3>
+                                </u>
+                                <b>
+                                    <ol>
+                                        <li>
+                                            This process will export selected Product(s)
+                                            Price from
+                                            Odoo to Bol.com store, as per the
+                                            configuration of pricelist Bol.com instance
+                                            configurations.
+                                        </li>
+                                    </ol>
+                                </b>
+                            </p>
+                        </div>
+                    </group>
+                    <footer>
+                        <button string="Export Price Manually"
+                                class="oe_highlight" type="object"
+                                name="bol_selective_offers_price_export"/>
+                        <button string="Cancel" class="oe_highlight"
+                                special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Below action used for update stock-->
+    <record id="action_wizard_for_update_stock_to_bol"
+            model="ir.actions.act_window">
+        <field name="name">Export Stock in Bol.com</field>
+        <field name="res_model">bol.process.import.export.ept</field>
+        <field name="binding_model_id" ref="model_bol_offer_ept"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="bol_ept.view_bol_stock_export_manually"/>
+    </record>
+
+    <!-- Below action used for update price-->
+    <record id="action_wizard_for_update_price_to_bol"
+            model="ir.actions.act_window">
+        <field name="name">Export Price in Bol.com</field>
+        <field name="res_model">bol.process.import.export.ept</field>
+        <field name="binding_model_id" ref="model_bol_offer_ept"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="bol_ept.view_bol_price_export_manually"/>
+    </record>
+
+    <record id="action_wizard_bol_processes_ept" model="ir.actions.act_window">
+        <field name="name">Bol Operations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bol.process.import.export.ept</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="bol_ept.view_bol_process_import_export_ept"/>
+    </record>
+
+    <!-- Below action used to redirect operation wizard from the instance kanban view-->
+    <record
+            id="action_wizard_bol_instance_import_export_operations"
+            model="ir.actions.act_window">
+        <field name="name">Bol Operations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bol.process.import.export.ept</field>
+        <field name="view_mode">form</field>
+        <field name="view_id"
+               ref="bol_ept.view_bol_process_import_export_ept"/>
+        <field name="context">{'default_instance_id':active_id}</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_bol_import_export_process_ept" name="Bol Operations"
+              parent="bol_ept.main_menu_bol_processes" action="action_wizard_bol_processes_ept"
+              sequence="1"/>
+
+
+</odoo>

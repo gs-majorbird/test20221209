@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--Kanban view of dashboard-->
+    <record id="view_bol_instance_kanban" model="ir.ui.view">
+        <field name="name">bol.instance.ept.kanban</field>
+        <field name="model">bol.instance.ept</field>
+        <field name="arch" type="xml">
+            <kanban
+                    class="oe_background_grey o_kanban_dashboard o_bol_kanban" sample="1"
+                    create="0" style="width:450px;"
+                    banner_route="/bol_instances/bol_instances_onboarding_panel" js_class="BolOnBoardingToggle">
+                <field name="name"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{kanban_color(record.color.raw_value)} record_dashboard_ept">
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <t t-esc="record.name.value"/>
+                                    </div>
+                                    <div class="o_kanban_manage_button_section">
+                                        <a class="o_kanban_manage_toggle_button" href="#">
+                                            <i class="fa fa-ellipsis-v" aria-label="Selection"
+                                               role="img" title="Selection"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <field name="bol_kanban_order_data"
+                                       graph_type="line" widget="dashboard_graph_ept"/>
+                            </div>
+                            <div
+                                    class="container o_kanban_card_manage_pane dropdown-menu"
+                                    role="menu">
+                                <div class="row">
+                                    <div
+                                            class="col-xs-3 o_kanban_card_manage_section o_kanban_manage_view">
+                                        <div role="menuitem" class="o_kanban_card_manage_title">
+                                            <span>FBR</span>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a
+                                                    name="%(bol_ept.action_bol_fbr_quotations_only)d"
+                                                    type="action" title="fbr_quotations">
+                                                Quotations
+                                            </a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a
+                                                    name="%(bol_ept.action_bol_fbr_sales_order_only)d"
+                                                    type="action" title="fbr_sales">
+                                                Sales Order
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div
+                                            class="col-xs-3 o_kanban_card_manage_section o_kanban_manage_view">
+                                        <div role="menuitem" class="o_kanban_card_manage_title">
+                                            <span>FBB</span>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a
+                                                    name="%(bol_ept.action_bol_fbb_quotations_only)d"
+                                                    type="action" title="FBR Quotations">
+                                                Quotations
+                                            </a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a
+                                                    name="%(bol_ept.action_bol_fbb_sales_order_only)d"
+                                                    type="action" title="FBB Sale Orders">
+                                                Sales Order
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div
+                                            class="col-xs-3 o_kanban_card_manage_section o_kanban_manage_new">
+                                        <div role="menuitem" class="o_kanban_card_manage_title">
+                                            <span>Delivery Orders</span>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a name="%(bol_ept.action_bol_fbr_picking_view)d"
+                                               type="action" title="FBR Delivery">
+                                                FBR
+                                            </a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a
+                                                    name="%(bol_ept.action_bol_fbb_picking_view)d"
+                                                    type="action" title="FBB Delivery">
+                                                FBB
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div
+                                            class="col-xs-3 o_kanban_card_manage_section o_kanban_manage_view">
+                                        <div role="menuitem" class="o_kanban_card_manage_title">
+                                            <span>Invoices</span>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a
+                                                    name="%(bol_ept.action_bol_fbr_invoices)d"
+                                                    type="action" title="FBR Invoices">
+                                                FBR
+                                            </a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a
+                                                    name="%(bol_ept.action_bol_fbb_invoice_view)d"
+                                                    type="action" title="FBB Invoices">
+                                                FBB
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div t-if="widget.editable"
+                                     class="o_kanban_card_manage_settings row">
+                                    <div class="col-xs-8">
+                                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="bol_instance_tree_view_ept" model="ir.ui.view">
+        <field name="name">Bol Instance</field>
+        <field name="model">bol.instance.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Bol Instance" create="false">
+                <field name="name"/>
+                <field name="bol_fbr_warehouse_id"/>
+                <field name="bol_fbb_warehouse_id"/>
+                <field name="bol_country_id"/>
+                <field name="state"  widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="bol_instance_search_view_ept" model="ir.ui.view">
+        <field name="name">Bol Instance Search View</field>
+        <field name="model">bol.instance.ept</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="bol Instance">
+                <field name="name"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Country" name="bol_country_id" icon="terp-personal"
+                            context="{'group_by':'bol_country_id'}"/>
+                    <filter string="State" name="state" icon="terp-personal"
+                            context="{'group_by':'state'}"/>
+                    <filter string="Company" name="company_id"
+                            context="{'group_by':'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="bol_instance_form_view_ept" model="ir.ui.view">
+        <field name="name">Bol Instance</field>
+        <field name="model">bol.instance.ept</field>
+        <field name="arch" type="xml">
+            <form string="Bol Instance">
+                <header>
+                    <button name="test_bol_connection" string="Check Connection"
+                            class="oe_highlight" type="object" states="not_confirmed"
+                            />
+                    <button name="reset_to_confirm" string="Reset Confirmation"
+                            type="object" states="confirmed"
+                            groups="bol_ept.group_bol_manager_ept"/>
+                    <button name="confirm" string="Confirm" type="object"
+                            states="not_confirmed" groups="bol_ept.group_bol_manager_ept"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_right oe_button_box" position="inside" name="button_box"
+                         style="float:inherit !important">
+                        <button name="toggle_active" type="object" class="oe_stat_button"
+                                icon="fa-archive">
+                            <field name="active" widget="boolean_button" invisible="1"
+                                   options="{&quot;terminology&quot;: &quot;active&quot;}"/>
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Active</span>
+                            </div>
+                        </button>
+<!--                        <field name="account_type" invisible="1"/>-->
+<!--                        <button attrs="{'invisible': [('account_type', '=', 'sandbox')]}"-->
+<!--                                class="oe_stat_button" name="toggle_prod_enviroment_value"-->
+<!--                                type="object" icon="fa-play">-->
+<!--                            <div class="o_stat_info o_form_field">-->
+<!--                                <span class="text-success">Production</span>-->
+<!--                                <span class="o_stat_text">Environment</span>-->
+<!--                            </div>-->
+<!--                        </button>-->
+<!--                        <button attrs="{'invisible': [('account_type', '=', 'production')]}"-->
+<!--                                class="oe_stat_button" name="toggle_staging_enviroment_value"-->
+<!--                                type="object" icon="fa-stop">-->
+<!--                            <div class="o_stat_info o_form_field">-->
+<!--                                <span class="o_warning_text">Test</span>-->
+<!--                                <span class="o_stat_text">Environment</span>-->
+<!--                            </div>-->
+<!--                        </button>-->
+                        <button class="oe_stat_button" name="list_of_instance_cron"
+                                type="object" icon="fa-tasks"
+                                style="width:14.5%" groups="base.group_system">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">FBB &amp; FBR</span>
+                                <span class="o_stat_text">Active Cron</span>
+                            </div>
+                        </button>
+                        <button type="object"
+                                name="global_cron_configuration_action"
+                                class="oe_stat_button"
+                                icon="fa-clock-o" style="width:16% !important"
+                                groups="base.group_system">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">FBB &amp; FBR</span>
+                                <span class="o_stat_text">Scheduler</span>
+                            </div>
+                        </button>
+                        <button type="object"
+                                name="fbb_cron_configuration_action"
+                                class="oe_stat_button"
+                                icon="fa-clock-o"
+                                attrs="{'invisible': [('bol_fulfillment_by', '=', 'FBR')]}"
+                                style="width:16% !important" groups="base.group_system">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">FBB Scheduler</span>
+                            </div>
+                        </button>
+                        <button type="object"
+                                name="fbr_cron_configuration_action"
+                                class="oe_stat_button"
+                                icon="fa-clock-o"
+                                attrs="{'invisible': [('bol_fulfillment_by', '=', 'FBB')]}"
+                                style="width:16% !important" groups="base.group_system">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">FBR Scheduler</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_left" style="width: 500px;">
+                        <div class="oe_title" style="width: 390px;">
+                            <label class="oe_edit_only" for="name" string="Name"/>
+                            <h1>
+                                <field name="name" class="oe_inline"
+                                       attrs="{'readonly':[('state','in','confirmed')]}"
+                                       required="1"/>
+                            </h1>
+                        </div>
+                    </div>
+
+                    <group string="ERP Configuration">
+                        <group>
+                            <field name="bol_fulfillment_by" invisible="1"/>
+                            <field name="bol_fbr_warehouse_id" readonly="1"
+                                   attrs="{'invisible': [('bol_fulfillment_by', '=', 'FBB')]}"/>
+                            <field name="bol_fbb_warehouse_id" readonly="1"
+                                   attrs="{'invisible': [('bol_fulfillment_by', '=', 'FBR')]}"/>
+                        </group>
+                        <group>
+                            <field name="bol_country_id" readonly="1"/>
+                            <field name="company_id" widget="selection" readonly="1"
+                                   groups="base.group_multi_company"/>
+                            <field name="bol_lang_id" required="1"
+                                   attrs="{'readonly':[('state','in','confirmed')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="bol_seller_info" string="Seller Info">
+                            <group groups="bol_ept.group_bol_manager_ept">
+                                <field name="client_id" password="True"
+                                       attrs="{'readonly':[('state','in','confirmed')]}"
+                                       required="1"/>
+                                <field name="secret_id" password="True"
+                                       attrs="{'readonly':[('state','in','confirmed')]}"
+                                       required="1"/>
+<!--                                <field name="account_type"-->
+<!--                                       attrs="{'readonly':[('state','in','confirmed')]}"-->
+<!--                                       required="1" invisible="1"/>-->
+                                <field name="bol_auth_token" password="True" style="word-break: break-all;"/>
+                            </group>
+                        </page>
+                        <page name="last_sync_settings" string="Last Sync Settings">
+                            <group>
+                                <group>
+                                    <field name="fbb_bol_shipped_page_number"/>
+                                    <field name="fbr_bol_shipped_page_number"/>
+                                </group>
+                                <group>
+                                    <field name="inventory_last_sync_on"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="bol_instance_search_view_ept" model="ir.ui.view">
+        <field name="name">Bol Instance Search View</field>
+        <field name="model">bol.instance.ept</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="bol Instance">
+                <field name="name"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Country" name="bol_country_id" icon="terp-personal"
+                            context="{'group_by':'bol_country_id'}"/>
+                    <filter string="State" name="state" icon="terp-personal"
+                            context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_bol_instance_ept" model="ir.actions.act_window">
+        <field name="name">Bol Instance</field>
+        <field name="res_model">bol.instance.ept</field>
+        <field name="view_id" ref="bol_instance_tree_view_ept"/>
+        <field name="help" type="html">
+            <div>
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    <b>There is no any Bol Instance configured yet.</b>
+                </p>
+                <p>
+                    To add your first Bol Instance, go to menu
+                    <i>Bol >> Configuration >> Settings</i>
+                    and create new Instance from there.
+                    At there you can define one or
+                    more Bol Instances and configure
+                    extended options per Instance.
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <record id="bol_kanban_action_ept" model="ir.actions.act_window">
+        <field name="name">Bol Dashboard</field>
+        <field name="res_model">bol.instance.ept</field>
+        <field name="view_mode">kanban</field>
+        <field name="domain">[('active','=', True)]</field>
+        <field name="view_id" ref="view_bol_instance_kanban"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                There is no any Bol Instance configured yet.
+            </p>
+            <p>
+                To add your first Bol Instance, go to Configuration menu and then open Setting,
+                you create new Instance from there.
+                At there you can define one or
+                more Bol Instances and configure
+                extended options per Instance.
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_item_navigate_bol_dashboard" name="Dashboard"
+              parent="bol_ept.bol_main_menu" sequence="1"
+              action="bol_kanban_action_ept"/>
+
+
+    <menuitem id="bol_instance_menu_item_instance" name="Instances"
+              parent="bol_ept.menu_bol_configuration_ept" sequence="3"
+              action="bol_ept.action_bol_instance_ept"/>
+
+
+</odoo>

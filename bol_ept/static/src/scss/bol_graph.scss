@@ -1,0 +1,14 @@
+/* Added for set width and place of the fulfillment by filter */
+#sort_order_data_bol {
+    max-width: calc(370px - 250px);
+    top: 2%;
+    right: 35%;
+}
+
+/* Added for the change button width for the bol dashboard only */
+.dashboard_graph_ept[name='bol_kanban_order_data'] {
+    .ep_kanban_records a {
+            width: 32.66%;
+            cursor: pointer;
+    }
+}

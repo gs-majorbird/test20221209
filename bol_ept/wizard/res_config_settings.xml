@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_bol_res_config_settings" model="ir.ui.view">
+        <field name="name">Bol Settings</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Bol.com" data-key="bol_ept">
+                    <h2>Bol Instance</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="bol_instance_id" string="Select Instance"/>
+                                <field name="bol_instance_id"
+                                       attrs="{'required':[('bol_instance_id','!=',False)]}"
+                                       widget="selection"/>
+                                <button name="%(action_bol_instance_config_ept)d"
+                                        icon="fa-arrow-right" type="action"
+                                        string="Create More Instances" class="oe_link"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane"
+                                 attrs="{'invisible':[('bol_instance_id','=',False)]}">
+                                <label for="bol_fulfillment_by"/>
+                                <field name="bol_fulfillment_by"
+                                       attrs="{'required': [('bol_instance_id', '!=', False)]}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div name="fbr"
+                         attrs="{'invisible': ['|',  ('bol_instance_id', '=', False), ('bol_fulfillment_by', '=', 'FBB')]}">
+                        <center>
+                            <h1 style="margin-bottom: 0;
+                                       padding: 0.25rem 16px;
+                                       background-color: #dee2e6;
+                                       font-size: 25px;
+                                       font-weight: bold;
+                                       color:#444;
+                                       font-family:arial;
+                                       text-shadow:
+                                        1px 0px 1px #ccc, 0px 1px 1px #eee,
+                                        2px 1px 1px #ccc, 1px 2px 1px #eee,
+                                        3px 2px 1px #ccc, 2px 3px 1px #eee,
+                                        4px 3px 1px #ccc, 3px 4px 1px #eee,
+                                        5px 4px 1px #ccc, 4px 5px 1px #eee,
+                                        6px 5px 1px #ccc, 5px 6px 1px #eee,
+                                        7px 6px 1px #ccc;">FBR
+                            </h1>
+                        </center>
+                    </div>
+
+                    <div name="fbr_orders"
+                         attrs="{'invisible': ['|', ('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBB')]}">
+                        <h2>FBR Order Configurations</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="is_default_sequence_fbr_sales_order"
+                                           class="oe_inline" widget="boolean_toggle"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="is_default_sequence_fbr_sales_order"/>
+                                    <div class="text-muted">
+                                        Set Order Number based on default Sale Order
+                                        Sequence
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box"
+                                 attrs="{'invisible': [('is_default_sequence_fbr_sales_order', '=',True)]}">
+                                <div class="o_setting_right_pane">
+                                    <label for="fbr_bol_order_prefix"/>
+                                    <div class="text-muted">
+                                        Enter Order Prefix
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="fbr_bol_order_prefix"
+                                                   class="o_light_label"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <label for="fbr_auto_workflow_id"/>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="fbr_auto_workflow_id" class="o_light_label"
+                                                   options="{'no_create':True,'no_create_edit':True}"
+                                                   attrs="{'required':[('bol_instance_id','!=',False),('bol_fulfillment_by', '!=', 'FBB')]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div name="fbr_inventory"
+                         attrs="{'invisible': ['|', ('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBB')]}">
+                        <h2>FBR Inventory Configurations</h2>
+                        <field name="bol_company_id" invisible="1"/>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_fbr_warehouse_id"/>
+                                    <div class="text-muted">
+                                        Select FBR Warehouse for your Instance
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="bol_fbr_warehouse_id" class="oe_inline"
+                                                   options="{'no_create':True,'no_create_edit':True}"
+                                                   domain="[('company_id','=',bol_company_id),('is_fbb_warehouse','=',False)]"
+                                                   attrs="{'required':[('bol_instance_id','!=',False), ('bol_fulfillment_by', '!=', 'FBB')]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_instance_stock_field"/>
+                                    <div class="text-muted">
+                                        Select inventory field for shopify products.
+                                        <br/>
+                                        Forecast Quantity = Quantity On Hand - Outgoing + Incoming
+                                        <br/>
+                                        Free To Use Quantity = Quantity On Hand - Reserved quantity
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="bol_instance_stock_field"
+                                                   class="o_light_label"
+                                                   attrs="{'required':[('bol_instance_id','!=',False), ('bol_fulfillment_by', '!=', 'FBB')]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div name="fbb"
+                         attrs="{'invisible': ['|',  ('bol_instance_id', '=', False), ('bol_fulfillment_by', '=', 'FBR')]}">
+                        <center>
+                            <h1 style="margin-bottom: 0;
+                                       padding: 0.25rem 16px;
+                                       background-color: #dee2e6;
+                                       font-size: 25px;
+                                       font-weight: bold;
+                                       color:#444;
+                                       font-family:arial;
+                                       text-shadow:
+                                        1px 0px 1px #ccc, 0px 1px 1px #eee,
+                                        2px 1px 1px #ccc, 1px 2px 1px #eee,
+                                        3px 2px 1px #ccc, 2px 3px 1px #eee,
+                                        4px 3px 1px #ccc, 3px 4px 1px #eee,
+                                        5px 4px 1px #ccc, 4px 5px 1px #eee,
+                                        6px 5px 1px #ccc, 5px 6px 1px #eee,
+                                        7px 6px 1px #ccc;">FBB
+                            </h1>
+                        </center>
+                    </div>
+
+                    <div name="fbb_orders"
+                         attrs="{'invisible': ['|', ('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBR')]}">
+                        <h2>FBB Order Configurations</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="is_default_sequence_fbb_sales_order"
+                                           class="oe_inline" widget="boolean_toggle"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="is_default_sequence_fbb_sales_order"/>
+                                    <div class="text-muted">
+                                        Set Order Number based on default Sale Order
+                                        Sequence
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box"
+                                 attrs="{'invisible': [('is_default_sequence_fbb_sales_order', '=',True)]}">
+                                <div class="o_setting_right_pane">
+                                    <label for="fbb_bol_order_prefix"/>
+                                    <div class="text-muted">
+                                        Enter Order Prefix
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="fbb_bol_order_prefix"
+                                                   class="o_light_label"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <label for="fbb_auto_workflow_id"/>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="fbb_auto_workflow_id" class="o_light_label"
+                                                   options="{'no_create':True,'no_create_edit':True}"
+                                                   attrs="{'required':[('bol_instance_id','!=',False),('bol_fulfillment_by', '!=', 'FBR')]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div name="fbb_inventory"
+                         attrs="{'invisible': ['|', ('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBR')]}">
+                        <h2>FBB Inventory Configurations</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_fbb_warehouse_id"/>
+                                    <div class="text-muted">
+                                        Select FBB Warehouse for your company
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="bol_fbb_warehouse_id" class="oe_inline"
+                                                   options="{'no_create':True,'no_create_edit':True}"
+                                                   domain="[('company_id','=',bol_company_id),('is_fbb_warehouse','!=', False)]"
+                                                   attrs="{'required':[('bol_instance_id','!=',False), ('bol_fulfillment_by', '!=', 'FBR')]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="bol_auto_validate_inventory"
+                                           class="oe_inline"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_auto_validate_inventory"/>
+                                    <div class="text-muted">
+                                        Auto Validate FBB Inventory
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                        Product Configurations
+                    </h2>
+                    <div class="row mt16 o_settings_container"
+                         attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="bol_auto_create_product" class="o_light_label" widget="boolean_toggle"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="bol_auto_create_product"/>
+                                <div class="text-muted">
+                                    If true then system will auto create product while importing
+                                    orders.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div name="shipment_and_other_fee"
+                         attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                        <h2>Shipment Configurations</h2>
+                        <div class="row mt16 o_settings_container">
+                            <!--<div class="col-xs-12 col-md-6 o_setting_box" invisible="1">
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_shipment_charge_product_id"/>
+                                    <div class="text-muted">
+                                        Product to be select for Shipment Fee Order Line in an Order
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="bol_shipment_charge_product_id"
+                                                   class="oe_inline"
+                                                   attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>-->
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_left_pane"/>
+                                <div class="o_setting_right_pane">
+                                    <label for="bol_import_shipment_order_type"/>
+                                    <div class="text-muted">
+                                        Select Import Shipment For(Process Shipments Up To 3 Months
+                                        Old)
+                                    </div>
+                                    <div class="content-group">
+                                        <div class="mt16">
+                                            <field name="bol_import_shipment_order_type"
+                                                   class="o_light_label"
+                                                   widget="selection"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                        Payment Configurations
+                    </h2>
+                    <div class="row mt16 o_settings_container"
+                         attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="bol_pricelist_id"/>
+                                <div class="text-muted">
+                                    Select Pricelist
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="bol_pricelist_id" class="o_light_label"
+                                               widget="selection"
+                                               attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="bol_payment_term_id"/>
+                                <div class="text-muted">
+                                    Select Payment Term
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="bol_payment_term_id" class="o_light_label"
+                                               widget="selection"
+                                               attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                        Other Configurations
+                    </h2>
+                    <div class="row mt16 o_settings_container"
+                         attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="bol_team_id"/>
+                                <div class="text-muted">
+                                    Select Sales Team
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="bol_team_id" class="o_light_label"
+                                               widget="selection"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="bol_import_order_after_date"/>
+                                <div class="text-muted">
+                                    System will import only those orders
+                                    which are created after
+                                    this configured date
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="bol_import_order_after_date"
+                                               class="o_light_label"
+                                               attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="bol_lang_id"/>
+                                <div class="text-muted">
+                                    Select Language for your Instance
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="bol_lang_id" class="o_light_label"
+                                               widget="selection"
+                                               attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 style="font-size:25px;background-color:#e9ecef;"
+                        attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                        Schedule Activity Information
+                    </h2>
+                    <div class="row mt16 o_settings_container"
+                         attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="is_bol_create_schedule" widget="boolean_toggle"
+                                       style="padding-left:25px;"/>
+                            </div>
+
+                            <div class="o_setting_right_pane">
+                                <label for="is_bol_create_schedule"/>
+                                <div class="text-muted">
+                                    If checked, Then Schedule Activity create.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box"
+                             attrs="{'invisible': [('is_bol_create_schedule', '=', False)]}">
+                            <div class="o_setting_right_pane">
+                                <label for="bol_activity_type_id" string="Activity Type"/>
+                                <div class="text-muted">
+                                    Select Schedule Activity Type
+                                    <div>
+                                        <field name="bol_activity_type_id"
+                                               class="oe_inline"
+                                               attrs="{'required': [('is_bol_create_schedule', '=', True)]}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box"
+                             attrs="{'invisible': [('is_bol_create_schedule', '=', False)]}">
+                            <div class="o_setting_right_pane">
+                                <label for="bol_user_ids"/>
+                                <div class="text-muted">
+                                    Select Responsible User
+                                    <div>
+                                        <field name="bol_user_ids" widget="many2many_tags"
+                                               class="oe_inline"
+                                               attrs="{'required': [('is_bol_create_schedule', '=', True)]}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box"
+                             attrs="{'invisible': [('is_bol_create_schedule', '=', False)]}">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="bol_date_deadline" string="Deadline Lead Days"/>
+                                <div class="text-muted">
+                                    Enter Lead Days For Deadline Date Of Schedule
+                                    Activity
+                                </div>
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <field name="bol_date_deadline"
+                                               class="o_light_label"
+                                               attrs="{'required': [('is_bol_create_schedule', '=', True)]}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_bol_config" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="view_id" ref="view_bol_res_config_settings"/>
+        <field name="context">{'module' : 'bol_ept'}</field>
+    </record>
+
+    <menuitem id="menu_bol_configuration_ept" name="Configuration" parent="bol_ept.bol_main_menu"
+              sequence="7"
+              groups="bol_ept.group_bol_user_ept"/>
+
+    <menuitem id="menu_bol_config" name="Settings" parent="bol_ept.menu_bol_configuration_ept"
+              sequence="1"
+              action="action_bol_config" groups="base.group_system"/>
+</odoo>

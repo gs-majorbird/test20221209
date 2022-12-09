@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="bol_product_sync_tree_view_ept" model="ir.ui.view">
+        <field name="name">Bol Product Tree View</field>
+        <field name="model">bol.product.sync.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Bol Product Sync Tree View">
+                <field name="name"/>
+                <field name="bol_instance_id"/>
+                <field name="requested_date"/>
+                <field name="state"/>
+                <field name="attachment_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="bol_product_sync_search_view_ept" model="ir.ui.view">
+        <field name="name">Bol Product Search View</field>
+        <field name="model">bol.product.sync.ept</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Bol Products">
+                <field name="name" string="Name" filter_domain="[('name','ilike',self)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Instance" domain="[]" name="bol_instance_id"
+                            icon="terp-accessories-archiver"
+                            context="{'group_by':'bol_instance_id'}"/>
+                    <filter string="Process Status" domain="[]" name="state"
+                            icon="terp-accessories-archiver"
+                            context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="bol_product_sync_form_view_ept" model="ir.ui.view">
+        <field name="name">Bol Product Sync Form View</field>
+        <field name="model">bol.product.sync.ept</field>
+        <field name="arch" type="xml">
+            <form string="Bol Sync Product Form View" create="false">
+                <header>
+                    <button name="request_file" class="oe_highlight" type="object"
+                            string="Request Product File"
+                            states='draft'/>
+                    <button name="get_file" class="oe_highlight" type="object"
+                            string="Retrive Product File"
+                            states="requested"/>
+                    <button name="process_file" class="oe_highlight" type="object"
+                            string="Process Product File"
+                            states="downloaded"/>
+                    <field name="is_hide_mismatch_detail_button" invisible="1"/>
+                    <button name="list_of_logs" string="Mismatch Details" class="oe_highlight"
+                            help="Click Here To Check Logs" type="object"
+                            attrs="{'invisible':[('is_hide_mismatch_detail_button','=', True)]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="bol_instance_id" required="1" widget="selection"
+                                   attrs="{'readonly':[('name','not in',['New',False])]}"/>
+                            <field name="entity_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="requested_date" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="attachment_id" invisible="1"/>
+                            <field name="update_price_in_pricelist"
+                                   attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="auto_create_product"
+                                   attrs="{'readonly':[('state','!=','draft')]}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"
+                           groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_bol_product_sync_ept" model="ir.actions.act_window">
+        <field name="name">Bol Sync Product Report</field>
+        <field name="res_model">bol.product.sync.ept</field>
+        <field name="view_id" ref="bol_product_sync_tree_view_ept"/>
+        <field name="help" type="html">
+            <div>
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    <b>There are no any Bol Product Sync Processed yet</b>
+                </p>
+            </div>
+        </field>
+    </record>
+    <menuitem id="menu_item_bol_products_sync_ept" name="Sync Products"
+              parent="bol_ept.bol_offer_menu_core" sequence="2"
+              action="action_bol_product_sync_ept"/>
+</odoo>

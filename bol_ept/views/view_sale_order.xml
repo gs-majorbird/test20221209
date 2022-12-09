@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_tree_bol_ept" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="model">sale.order</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <tree sample="1" decoration-success="updated_in_bol==True"
+                  decoration-muted="state=='cancel'"
+                  decoration-info="state in ('waiting_date','manual')"
+                  decoration-danger="state in ('invoice_except','shipping_except')" create="false">
+                <field name="name" string="Order Number" decoration-bf="1"/>
+                <field name="date_order"/>
+                <field name="partner_id"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="amount_total" sum="Total Tax Included" widget="monetary"
+                       decoration-bf="1"/>
+                <field name="state" decoration-success="state == 'sale' or state == 'done'"
+                       decoration-info="state == 'draft' or state == 'sent'" widget="badge"/>
+                <field name="updated_in_bol" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_bol_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Bol Info"
+                      attrs="{'invisible':[('bol_instance_id','=',False)]}">
+                    <group>
+                        <field name="bol_instance_id" domain="[('state','=','confirmed')]"
+                               readonly="True"/>
+                        <field name="bol_fulfillment_by" readonly="1"/>
+                        <field name="bol_order_id" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="bol_view_sales_order_filter" model="ir.ui.view">
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <field name="team_id" position="after">
+                <field name="bol_order_id"/>
+            </field>
+            <filter name="my_sale_orders_filter" position="after">
+                <filter string="Updated in Bol.com"
+                        name="order_status_updated_in_bol"
+                        domain="[('updated_in_bol', '=', True)]"/>
+                <filter string="Not Updated in Bol.com"
+                        name="order_status_not_updated_in_bol"
+                        domain="[('updated_in_bol', '!=', True)]"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="action_bol_fbr_sales_order" model="ir.actions.act_window">
+        <field name="name">Bol Sales Order</field>
+        <field name="res_model">sale.order</field>
+        <field name="domain">[('bol_order_id','!=',False),('state','not
+            in',('draft','sent','cancel')),
+            ('bol_instance_id','=',active_id),('bol_fulfillment_by', '=', 'FBR')]
+        </field>
+        <field name="view_id" ref="view_order_tree_bol_ept"/>
+        <field name="help" type="html">
+            <div class="oe_empty_bol_sale_order">
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    <b>There is no any Sale Order synchronised from any of your Bol.com Instance
+                        yet.
+                    </b>
+                </p>
+                <p>
+                    You can't create Sale Order manually and push it to Bol.com. Through only
+                    import Sale Order from
+                    any of your Bol.com Instance, you can see your Orders here. Import Sale
+                    Order can be performed by 2 ways.
+                </p>
+                <p>
+                    <b>1.</b>
+                    Via automatic jobs to import Sale Orders at frequent amount of time.
+                    <br/>
+                    Go to menu Bol >> Configuration >> Settings, Select Instance for which you
+                    want to import orders, Here in <b>Order Information</b> you can see option
+                    of <i>Auto Order Import</i>.
+                </p>
+                <p>
+                    <b>2.</b>
+                    Manually Import Orders at any time
+                    <br/>
+                    Go to menu Bol >> Processes >> Bol Operations and select your instances and
+                    option "Import Sale Order".
+                    Clicking on "OK" button will import all open orders from Bol.com to ERP.
+                </p>
+            </div>
+        </field>
+    </record>
+
+
+    <record id="action_bol_fbb_sales_order" model="ir.actions.act_window">
+        <field name="name">Bol Sales Order</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('bol_order_id','!=',False),('state','not
+            in',('draft','sent','cancel')),
+            ('bol_instance_id','=',active_id),('bol_fulfillment_by', '=', 'FBB')]
+        </field>
+        <field name="view_id" ref="view_order_tree_bol_ept"/>
+        <field name="help" type="html">
+            <div class="oe_empty_bol_sale_order">
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    <b>There is no any Sale Order synchronised from any of your Bol.com Instance
+                        yet.
+                    </b>
+                </p>
+                <p>
+                    You can't create Sale Order manually and push it to Bol.com. Through only
+                    import Sale Order from
+                    any of your Bol.com Instance, you can see your Orders here. Import Sale
+                    Order can be performed by 2 ways.
+                </p>
+                <p>
+                    <b>1.</b>
+                    Via automatic jobs to import Sale Orders at frequent amount of time.
+                    <br/>
+                    Go to menu Bol >> Configuration >> Settings, Select Instance for which you
+                    want to import orders, Here in <b>Order Information</b> you can see option
+                    of <i>Auto Order Import</i>.
+                </p>
+                <p>
+                    <b>2.</b>
+                    Manually Import Orders at any time
+                    <br/>
+                    Go to menu Bol >> Processes >> Bol Operations and select your instances and
+                    option "Import Sale Order".
+                    Clicking on "OK" button will import all open orders from Bol.com to ERP.
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <record id="action_fbr_bol_instance_sale_quotation" model="ir.actions.act_window">
+        <field name="name">Bol Quotations</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="view_order_tree_bol_ept"/>
+        <field name="search_view_id" ref="sale.view_sales_order_filter"/>
+        <field name="domain">
+            [('bol_order_id','!=',False),('state','in',('draft','sent','cancel')),('bol_instance_id','=',active_id),('bol_fulfillment_by','=','FBR')]
+        </field>
+        <field name="help" type="html">
+            <div class="oe_empty_bol_sale_quotation">
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    <b>There is no any Sale Quotation synchronised from any of your Bol.com
+                        Instance yet.
+                    </b>
+                </p>
+                <p>
+                    You can't create Sale Quotation manually and push it to Bol.com. Through
+                    only import Sale Quotation from
+                    any of your Bol.com Instance, you can see your Quotation here.Import Sale
+                    Quotation can be performed by 2 ways.
+                </p>
+                <p>
+                    <b>1.</b>
+                    Via automatic jobs to import Sale Quotation at frequent amount of time.
+                    <br/>
+                    Go to menu Settings >> Technical >> Automation >> Schedule Actions and
+                    activate automatic Job for Import Quotation from Bol.com.
+                    However from Bol settings you can set your preferred timings for auto import
+                    Sale Quotation from Bol.com.
+                </p>
+                <p>
+                    <b>2.</b>
+                    Manually Import Orders at any time
+                    <br/>
+                    Go to menu Bol >> Processes >> Bol Operations and select your instances and
+                    option "Import Orders".
+                    Clicking on "OK" button will import all <b>Open</b> orders from Bol to ERP.
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <record id="action_fbb_bol_instance_sale_quotation" model="ir.actions.act_window">
+        <field name="name">Bol Quotations</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="view_order_tree_bol_ept"/>
+        <field name="domain">
+            [('bol_order_id','!=',False),('state','in',('draft','sent','cancel')),('bol_instance_id','=',active_id),('bol_fulfillment_by','=','FBB')]
+        </field>
+        <field name="help" type="html">
+            <div class="oe_empty_bol_sale_quotation">
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    <b>There is no any Sale Quotation synchronised from any of your Bol.com
+                        Instance yet.
+                    </b>
+                </p>
+                <p>
+                    You can't create Sale Quotation manually and push it to Bol.com. Through
+                    only import Sale Quotation from
+                    any of your Bol.com Instance, you can see your Quotation here.Import Sale
+                    Quotation can be performed by 2 ways.
+                </p>
+                <p>
+                    <b>1.</b>
+                    Via automatic jobs to import Sale Quotation at frequent amount of time.
+                    <br/>
+                    Go to menu Settings >> Technical >> Automation >> Schedule Actions and
+                    activate automatic Job for Import Quotation from Bol.com.
+                    However from Bol settings you can set your preferred timings for auto import
+                    Sale Quotation from Bol.com.
+                </p>
+                <p>
+                    <b>2.</b>
+                    Manually Import Orders at any time
+                    <br/>
+                    Go to menu Bol >> Processes >> Bol Operations and select your instances and
+                    option "Import Orders".
+                    Clicking on "OK" button will import all <b>Open</b> orders from Bol to ERP.
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <record id="action_bol_fbb_sales_order_only" model="ir.actions.act_window">
+        <field name="name">Bol Sales Order</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_order_tree_bol_ept"/>
+        <field name="domain">[('bol_order_id','!=',False),('bol_fulfillment_by', '=',
+            'FBB'),('state','not in',('draft','sent','cancel'))]
+        </field>
+    </record>
+
+    <record id="action_bol_fbr_sales_order_only" model="ir.actions.act_window">
+        <field name="name">Bol Sales Order</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="view_order_tree_bol_ept"/>
+        <field name="domain">[('bol_order_id','!=',False),('bol_fulfillment_by', '=',
+            'FBR'),('state','not in',('draft','sent','cancel'))]
+        </field>
+    </record>
+
+    <record id="action_bol_fbr_quotations_only" model="ir.actions.act_window">
+        <field name="name">Bol Quotations</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="view_order_tree_bol_ept"/>
+        <field name="domain">[('bol_order_id','!=',False),('bol_fulfillment_by', '=',
+            'FBR'),('state','in',['draft'])]
+        </field>
+    </record>
+
+    <record id="action_bol_fbb_quotations_only" model="ir.actions.act_window">
+        <field name="name">Bol Quotations</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="view_order_tree_bol_ept"/>
+        <field name="domain">[('bol_order_id','!=',False),('bol_fulfillment_by', '=',
+            'FBB'),('state','in',['draft'])]
+        </field>
+    </record>
+
+    <menuitem id="bol_menu_item_sales" name="Sales"
+              parent="bol_ept.bol_main_menu" sequence="2"/>
+
+    <menuitem id="menu_item_parent_bol_fbr" name="FBR"
+              parent="bol_ept.bol_menu_item_sales" sequence="1"
+              groups="bol_ept.group_bol_fbr_ept,bol_ept.group_bol_fbr_and_fbb_ept"/>
+
+    <menuitem id="bol_menu_fbr_sales_order" name="Sales Order"
+              parent="bol_ept.menu_item_parent_bol_fbr"
+              action="action_bol_fbr_sales_order_only"
+              sequence="2"/>
+
+    <menuitem id="bol_menu_fbr_quotations" name="Quotations"
+              parent="bol_ept.menu_item_parent_bol_fbr"
+              action="action_bol_fbr_quotations_only"
+              sequence="1"/>
+
+    <menuitem id="menu_item_parent_bol_fbb" name="FBB"
+              parent="bol_ept.bol_menu_item_sales" sequence="2"
+              groups="bol_ept.group_bol_fbb_ept,bol_ept.group_bol_fbr_and_fbb_ept"/>
+
+
+    <menuitem id="bol_menu_fbb_quotations" name="Quotations"
+              parent="bol_ept.menu_item_parent_bol_fbb"
+              action="action_bol_fbb_quotations_only"
+              sequence="1"/>
+
+    <menuitem id="bol_menu_fbb_sales_order" name="Sales Order"
+              parent="bol_ept.menu_item_parent_bol_fbb"
+              action="action_bol_fbb_sales_order_only"
+              sequence="2"/>
+
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="bol_main_menu" name="Bol.com" sequence="20" groups="bol_ept.group_bol_user_ept"
+              web_icon="bol_ept,static/description/icon.png"/>
+
+    <!--    <menuitem id="main_menu_bol_dashboard" name="Dashboard" parent="bol_ept.bol_main_menu" sequence="1"/>-->
+
+    <menuitem id="main_menu_bol_processes" name="Processes" parent="bol_ept.bol_main_menu" sequence="5"/>
+</odoo>

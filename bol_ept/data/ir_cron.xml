@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--Import shipped order queue-->
+    <record id="ir_cron_auto_import_bol_shipped_order_queue" model="ir.cron">
+        <field name="name">Bol.Com : Import Shipped Order Queue(Do Not Delete)</field>
+        <field eval="False" name="active"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">500</field>
+        <field eval="False" name="doall"/>
+        <field ref="model_bol_shipped_data_queue_ept" name="model_id"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_import_shipped_order_queue()</field>
+    </record>
+    <!--Process Open Order queue-->
+    <record id="ir_cron_process_bol_open_order_queue" model="ir.cron">
+        <field name="name">Bol.com : Process Order Queue (Do not delete)</field>
+        <field name="model_id" ref="model_bol_queue_ept"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_process_open_order_queue()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <!-- Process Shipped order queue-->
+    <record id="ir_cron_process_bol_shipped_order_queue" model="ir.cron">
+        <field name="name">Bol.com : Process Shipped Order Queue (Do not delete)</field>
+        <field name="model_id" ref="model_bol_shipped_data_queue_ept"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_process_shipped_order_queue()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <!-- Import FBR Open order queue -->
+    <record id="ir_cron_import_fbr_open_orders_queue" model="ir.cron">
+        <field name="name"> Import FBR Open Order Queue (Bol.com) (Do not delete)</field>
+        <field name="model_id" ref="model_bol_queue_ept"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_import_fbr_open_order_queue()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">false</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <!-- Update FBR order status -->
+    <record id="ir_cron_update_fbr_order_status" model="ir.cron">
+        <field name="name">Update FBR order tracking information (Bol.com) (Do not Delete)</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_update_fbr_order_status()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">false</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <!-- Export product stock -->
+    <record id="ir_cron_export_product_stock_bol" model="ir.cron">
+        <field name="name">Export Product Stocks (Bol.com) (Do not Delete)</field>
+        <field name="model_id" ref="model_bol_offer_ept"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_update_fbr_product_stock()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">false</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <!-- Import FBB open orders queue -->
+    <record id="ir_cron_import_fbb_open_orders_queue" model="ir.cron">
+        <field name="name">Import FBB Open Order Queue (Bol.com) (Do not Delete)</field>
+        <field name="model_id" ref="model_bol_queue_ept"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_import_fbb_open_order_queue()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">false</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <!-- Import shipment-->
+    <record id="ir_cron_import_fbr_and_fbb_shipments" model="ir.cron">
+        <field name="name">Import FBR &amp; FBB shipments (Bol.com) (Do not Delete)</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_import_fbr_fbb_shipments()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">false</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- view of fbr and fbb configuration-->
+    <record id="bol_basic_fbr_and_fbb_configurations_onboarding_wizard_view" model="ir.ui.view">
+        <field name="name">bol.basic.fbr.and.fbb.configurations.onboarding.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <form class="o_bol_ept">
+                <field name="bol_fulfillment_by" invisible="1"/>
+                <div class="oe_title mb-2 ml-2"
+                     attrs="{'invisible': [('bol_instance_id', '!=', False)]}">
+                    <h1 class="o_on_board_heading">
+                        No Instance Created Yet!
+                    </h1>
+                </div>
+                <div class="oe_title mb-2 ml-2"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                    <h1 class="font-weight-bold o_on_board_heading">
+                        <field name="bol_instance_id" readonly="1"
+                               options="{'no_open': True}"/>
+                    </h1>
+                </div>
+                <div class="o_horizontal_separator o_onboard_header font-weight-bold"
+                     attrs="{'invisible': ['|',('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBB')]}">FBR
+                    Order Configurations
+                </div>
+                <div class="row mt16 o_settings_container o_onboard_padding"
+                     attrs="{'invisible': ['|',('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBB')]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div class="ml-2 pl-1">
+                            <field name="fbr_auto_workflow_id" class="o_light_label o_onboard_input"
+                                   options="{'no_create':True,'no_create_edit': True,'no_open': True}"
+                                   attrs="{'required':[('bol_instance_id','!=',False),('bol_fulfillment_by', '!=', 'FBB')]}"/>
+                            <label for="fbr_auto_workflow_id"
+                                   string="Auto Workflow"
+                                   class="o_onboard_label"/>
+                            <a href="javascript:void(0)"
+                               title="Order will be process base on the auto invoice workflow. &#013; It will confirm order, Create and Validate Invoice, Register Payment and Force Accounting Date base on the auto invoice workflow."
+                               class="ml-2 o_doc_link o_onboard_doc_link"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div class="ml-2 pl-1">
+                            <field name="is_default_sequence_fbr_sales_order"
+                                   widget="boolean_toggle" class="o_onboard_boolean_toggle"/>
+                            <label for="is_default_sequence_fbr_sales_order"
+                                   string="Use Odoo Default Sequence?"
+                                   class="o_onboard_label"/>
+                            <a href="javascript:void(0)"
+                               title="If checked,Then use default sequence of odoo for sale order create."
+                               class="ml-2 o_doc_link o_onboard_doc_link"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box"
+                         attrs="{'invisible':[('is_default_sequence_fbr_sales_order','=',True)]}">
+                        <div>
+                            <label for="fbr_bol_order_prefix" class="o_onboard_label"/>
+                            <field name="fbr_bol_order_prefix"
+                                   class="o_light_label w-50 o_onboard_input"/>
+                            <a href="javascript:void(0)"
+                               title="Enter Order Prefix"
+                               class="ml-2 o_doc_link o_onboard_doc_link"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="o_horizontal_separator font-weight-bold o_onboard_header"
+                     attrs="{'invisible': ['|',('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBB')]}">FBR
+                    Inventory Configurations
+                </div>
+                <div class="row mt16 o_settings_container o_onboard_padding"
+                     attrs="{'invisible': ['|',('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBB')]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div>
+                            <label for="bol_fbr_warehouse_id" class="o_onboard_label"/>
+                            <field name="bol_fbr_warehouse_id"
+                                   class="o_light_label w-50 o_onboard_select" widget="selection"
+                                   attrs="{'required':[('bol_instance_id','!=',False),('bol_fulfillment_by', '!=', 'FBB')]}"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <label for="bol_instance_stock_field" class="o_onboard_label"/>
+                        <field name="bol_instance_stock_field"
+                               class="o_light_label o_onboard_input"
+                               options="{'no_create':True,'no_create_edit': True}"
+                               attrs="{'required':[('bol_instance_id','!=',False),('bol_fulfillment_by', '!=', 'FBB')]}"/>
+                        <a href="javascript:void(0)"
+                           title="Select inventory field for Bol products.
+                                       Forecast Quantity = Quantity On Hand - Outgoing + Incoming
+                                       Free To Use Quantity = Quantity On Hand - Reserved quantity"
+                           class="ml-2 o_doc_link o_onboard_doc_link"/>
+                    </div>
+                </div>
+                <div class="o_horizontal_separator o_onboard_header font-weight-bold"
+                     attrs="{'invisible': ['|',('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBR')]}">FBB
+                    Order Configurations
+                </div>
+                <div class="row mt16 o_settings_container o_onboard_padding"
+                     attrs="{'invisible': ['|',('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBR')]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div class="ml-2 pl-1">
+                            <field name="fbb_auto_workflow_id" class="o_light_label o_onboard_input"
+                                   options="{'no_create':True,'no_create_edit': True,'no_open': True}"
+                                   attrs="{'required':[('bol_instance_id','!=',False),('bol_fulfillment_by', '!=', 'FBR')]}"/>
+                            <label for="fbb_auto_workflow_id"
+                                   string="Auto Workflow"
+                                   class="o_onboard_label"/>
+                            <a href="javascript:void(0)"
+                               title="Order will be process base on the auto invoice workflow. &#013; It will confirm order, Create and Validate Invoice, Register Payment and Force Accounting Date base on the auto invoice workflow."
+                               class="ml-2 o_doc_link o_onboard_doc_link"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div class="ml-2 pl-1">
+                            <field name="is_default_sequence_fbb_sales_order"
+                                   widget="boolean_toggle" class="o_onboard_boolean_toggle"/>
+                            <label for="is_default_sequence_fbb_sales_order"
+                                   string="Use Odoo Default Sequence?"
+                                   class="o_onboard_label"/>
+                            <a href="javascript:void(0)"
+                               title="If checked,Then use default sequence of odoo for sale order create."
+                               class="ml-2 o_doc_link o_onboard_doc_link"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box"
+                         attrs="{'invisible':[('is_default_sequence_fbb_sales_order','=',True)]}">
+                        <div>
+                            <label for="fbb_bol_order_prefix" class="o_onboard_label"/>
+                            <field name="fbb_bol_order_prefix"
+                                   class="o_light_label w-50 o_onboard_input"/>
+                            <a href="javascript:void(0)"
+                               title="Enter Order Prefix"
+                               class="ml-2 o_doc_link o_onboard_doc_link"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="o_horizontal_separator font-weight-bold o_onboard_header"
+                     attrs="{'invisible': ['|',('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBR')]}">FBB
+                    Inventory Configurations
+                </div>
+                <div class="row mt16 o_settings_container o_onboard_padding"
+                     attrs="{'invisible': ['|',('bol_instance_id', '=', False),('bol_fulfillment_by', '=', 'FBR')]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div>
+                            <label for="bol_fbb_warehouse_id" class="o_onboard_label"/>
+                            <field name="bol_company_id" invisible="1"/>
+                            <field name="bol_fbb_warehouse_id"
+                                   class="o_light_label w-50 o_onboard_select" widget="selection"
+                                   domain="[('company_id','=',bol_company_id),('is_fbb_warehouse','!=', False)]"
+                                   attrs="{'required':[('bol_instance_id','!=',False),('bol_fulfillment_by', '!=', 'FBR')]}"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div class="ml-2 pl-1">
+                            <field name="bol_auto_validate_inventory"
+                                   class="o_onboard_boolean_toggle" widget="boolean_toggle"/>
+                            <label for="bol_auto_validate_inventory" class="o_onboard_label"/>
+                            <a href="javascript:void(0)"
+                               title="Auto Validate FBB Inventory"
+                               class="mr-2 o_doc_link o_onboard_doc_link"/>
+                        </div>
+                    </div>
+                </div>
+                <footer>
+                    <button string="Save Configurations" type="object"
+                            name="bol_save_fbr_and_fbb_configurations"
+                            class="oe_highlight o_onboard_button"
+                            attrs="{'invisible': [('bol_instance_id', '=', False)]}"/>
+                    <button class="oe_highlight o_onboard_button_white" special="cancel"
+                            string="Cancel"/>
+                </footer>
+                <script>
+                    $('document').ready(function(){
+                    $('div.o_form_view.o_bol_ept').parents('div.modal-content').addClass('on_board_custom_form')
+                    });
+                </script>
+            </form>
+        </field>
+    </record>
+
+    <!-- view of general configuration-->
+    <record id="bol_general_configurations_onboarding_wizard_view" model="ir.ui.view">
+        <field name="name">bol.basic.general.configurations.onboarding.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <form class="o_bol_ept">
+                <div class="oe_title mb-2 ml-2"
+                     attrs="{'invisible': [('bol_instance_id', '!=', False)]}">
+                    <h1 class="o_on_board_heading">
+                        No Instance Created Yet!
+                    </h1>
+                </div>
+                <div class="oe_title mb-2 ml-2"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                    <h1 class="font-weight-bold o_on_board_heading">
+                        <field name="bol_instance_id" readonly="1"
+                               options="{'no_open': True}"/>
+                    </h1>
+                </div>
+                <div class="o_horizontal_separator o_onboard_header font-weight-bold"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">Product Configurations
+                </div>
+                <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                    <div class="ml-2 pl-1">
+                        <field name="bol_auto_create_product"
+                               widget="boolean_toggle" class="o_onboard_boolean_toggle"/>
+                        <label for="bol_auto_create_product"
+                               string="Auto Create product"
+                               class="o_onboard_label"/>
+                        <a href="javascript:void(0)"
+                           title="If true then system will auto create product while importing orders."
+                           class="ml-2 o_doc_link o_onboard_doc_link"/>
+                    </div>
+                </div>
+                <div class="o_horizontal_separator font-weight-bold o_onboard_header"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">Shipment Configurations
+                </div>
+                <div class="row mt16 o_settings_container o_onboard_padding"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div>
+                            <label for="bol_import_shipment_order_type" class="o_onboard_label"/>
+                            <field name="bol_import_shipment_order_type"
+                                   class="o_light_label w-50 o_onboard_select" widget="selection"
+                                   attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="o_horizontal_separator o_onboard_header font-weight-bold"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">Payment Configurations
+                </div>
+                <div class="row mt16 o_settings_container o_onboard_padding"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div>
+                            <label for="bol_pricelist_id" class="o_onboard_label"/>
+                            <field name="bol_pricelist_id"
+                                   class="o_light_label w-50 o_onboard_select" widget="selection"
+                                   attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <label for="bol_payment_term_id" class="o_onboard_label"/>
+                        <field name="bol_payment_term_id"
+                               class="o_light_label o_onboard_input"
+                               attrs="{'required':[('bol_instance_id','!=',False)]}"
+                               options="{'no_create':True,'no_create_edit': True,'no_open': True}"/>
+                        <a href="javascript:void(0)"
+                           title="Payment Term"
+                           class="ml-2 o_doc_link o_onboard_doc_link"/>
+                    </div>
+                </div>
+                <div class="o_horizontal_separator font-weight-bold o_onboard_header"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">Other Configurations
+                </div>
+                <div class="row mt16 o_settings_container o_onboard_padding"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div>
+                            <label for="bol_team_id" class="o_onboard_label"/>
+                            <field name="bol_team_id"
+                                   class="o_light_label w-50 o_onboard_select" widget="selection"
+                                   attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <label for="bol_import_order_after_date" class="o_onboard_label"/>
+                        <field name="bol_import_order_after_date"
+                               attrs="{'required':[('bol_instance_id','!=',False)]}"
+                               class="o_light_label o_onboard_input"/>
+                        <a href="javascript:void(0)"
+                           title="System will import only those orders which are created after this configured date"
+                           class="ml-2 o_doc_link o_onboard_doc_link"/>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div>
+                            <label for="bol_lang_id" class="o_onboard_label"/>
+                            <field name="bol_lang_id"
+                                   class="o_light_label w-50 o_onboard_select" widget="selection"
+                                   attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="o_horizontal_separator font-weight-bold o_onboard_header"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">Schedule Activity Information
+                </div>
+                <div class="row mt16 o_settings_container o_onboard_padding"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box">
+                        <div>
+                            <label for="is_bol_create_schedule" class="o_onboard_label"/>
+                            <field name="is_bol_create_schedule"
+                                   class="o_onboard_boolean_toggle" widget="boolean_toggle"
+                                   attrs="{'required':[('bol_instance_id','!=',False)]}"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box"
+                         attrs="{'invisible':[('is_bol_create_schedule','=',False)]}">
+                        <label for="bol_activity_type_id" class="o_onboard_label"/>
+                        <field name="bol_activity_type_id"
+                               class="o_light_label o_onboard_input"
+                               options="{'no_create':True,'no_create_edit': True,'no_open': True}"
+                               attrs="{'required':[('is_bol_create_schedule','=',True)]}"/>
+                        <a href="javascript:void(0)"
+                           title="Activity"
+                           class="ml-2 o_doc_link o_onboard_doc_link"/>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box"
+                         attrs="{'invisible':[('is_bol_create_schedule','=',False)]}">
+                        <div>
+                            <label for="bol_user_ids" class="o_onboard_label"/>
+                            <field name="bol_user_ids"
+                                   class="o_light_label o_onboard_input" widget="many2many_tags"
+                                   attrs="{'required':[('is_bol_create_schedule','=',True)]}"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box o_onboard_setting_box"
+                         attrs="{'invisible':[('is_bol_create_schedule','=',False)]}">
+                        <label for="bol_date_deadline" class="o_onboard_label"/>
+                        <field name="bol_date_deadline"
+                               class="o_light_label o_onboard_input"
+                               attrs="{'required':[('is_bol_create_schedule','=',True)]}"/>
+                        <a href="javascript:void(0)"
+                           title="Deadline"
+                           class="ml-2 o_doc_link o_onboard_doc_link"/>
+                    </div>
+                </div>
+                <footer>
+                    <button string="Save General Configurations" type="object"
+                            name="bol_save_general_configurations"
+                            class="oe_highlight o_onboard_button"
+                            attrs="{'invisible': [('bol_instance_id', '=', False)]}"/>
+                    <button class="oe_highlight o_onboard_button_white" special="cancel"
+                            string="Cancel"/>
+                </footer>
+                <script>
+                    $('document').ready(function(){
+                    $('div.o_form_view.o_bol_ept').parents('div.modal-content').addClass('on_board_custom_form')
+                    });
+                </script>
+            </form>
+        </field>
+    </record>
+
+    <!--This is a common view for cron configuration wizard -->
+    <record id="bol_cron_configuration_ept_form_view"
+            model="ir.ui.view">
+        <field name="name">bol.cron.configuration.ept.form</field>
+        <field name="model">bol.cron.configuration.ept</field>
+        <field name="priority">11</field>
+        <field name="arch" type="xml">
+            <form string="Manual Queue Process" class="o_bol_ept">
+                <field name="bol_fulfillment_by" invisible="True"/>
+                <div class="oe_title mb-2 ml-2"
+                     attrs="{'invisible': [('bol_instance_id', '!=', False)]}">
+                    <h1 class="o_on_board_heading">
+                        No Instance Created Yet!
+                    </h1>
+                </div>
+                <div class="oe_title" attrs="{'invisible': [('bol_instance_id', '=', False)]}"
+                     invisible="not context.get('is_calling_from_onboarding_panel', False)">
+                    <h1 class="font-weight-bold o_on_board_heading">
+                        <field name="bol_instance_id" readonly="1" options="{'no_open': True}"/>
+                    </h1>
+                </div>
+                <div class="o_horizontal_separator o_onboard_header font-weight-bold"
+                     attrs="{'invisible': [('bol_instance_id', '=', False)]}"
+                     invisible="context.get('is_calling_from_onboarding_panel', False) and not context.get('is_instance_exists', False)">
+                    FBB &amp; FBR Scheduler
+                </div>
+                <group invisible="context.get('is_calling_from_onboarding_panel', False) and not context.get('is_instance_exists', False)"
+                       attrs="{'invisible': [('bol_instance_id', '=', False)]}">
+                    <div class="o_setting_left_pane">
+                        <div class="row mt16 o_settings_container o_onboard_padding">
+                            <div class="col-12 o_setting_box o_onboard_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="auto_import_process_bol_shipment" widget="boolean_toggle"
+                                           class="o_onboard_boolean_toggle"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span>
+                                        <h6>Import &amp; Process BOL Shipment</h6>
+                                    </span>
+                                    <div class="text-muted">
+                                        Automatic scheduler for Import shipment.
+                                    </div>
+                                    <br/>
+
+                                    <div class="o_onboard_cron_settings"
+                                         attrs="{'invisible': [('auto_import_process_bol_shipment', '=', False)]}">
+                                        <field name="import_process_shipment_interval_number"
+                                               attrs="{'required': [('auto_import_process_bol_shipment', '=', True)]}"
+                                               class="o_onboard_cron_box"/>
+                                        <field name="import_process_shipment_interval_type"
+                                               attrs="{'required': [('auto_import_process_bol_shipment', '=', True)]}"
+                                               class="o_onboard_cron_type"/>
+                                        <field name="import_process_shipment_next_execution"
+                                               attrs="{'required': [('auto_import_process_bol_shipment', '=', True)]}"
+                                               class="o_onboard_cron_execution"/>
+                                        <field name="import_process_shipment_user_id"
+                                               attrs="{'required': [('auto_import_process_bol_shipment', '=', True)]}"
+                                               class="o_onboard_cron_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </group>
+                <div class="o_horizontal_separator o_onboard_header font-weight-bold"
+                     invisible="context.get('is_calling_from_onboarding_panel', False) and not context.get('is_instance_exists', False)"
+                     attrs="{'invisible': ['|',('bol_instance_id', '=', False),('bol_fulfillment_by', 'in',['FBR'])]}">
+                    FBB Scheduler
+                </div>
+                <group invisible="context.get('is_calling_from_onboarding_panel', False) and not context.get('is_instance_exists', False)"
+                       attrs="{'invisible': ['|',('bol_instance_id', '=', False), ('bol_fulfillment_by', 'in',['FBR'])]}">
+                    <div class="o_setting_left_pane">
+                        <div class="row mt16 o_settings_container o_onboard_padding">
+                            <div class="col-12 o_setting_box o_onboard_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="bol_auto_import_fbb_order" widget="boolean_toggle"
+                                           class="o_onboard_boolean_toggle"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span>
+                                        <h6>FBB Order Import</h6>
+                                    </span>
+                                    <div class="text-muted">
+                                        Automatic scheduler for FBB order import
+                                    </div>
+                                    <br/>
+
+                                    <div class="o_onboard_cron_settings"
+                                         attrs="{'invisible': [('bol_auto_import_fbb_order', '=', False)]}">
+                                        <field name="bol_fbb_order_import_interval_number"
+                                               attrs="{'required': [('bol_auto_import_fbb_order', '=', True)]}"
+                                               class="o_onboard_cron_box"/>
+                                        <field name="bol_fbb_order_import_interval_type"
+                                               attrs="{'required': [('bol_auto_import_fbb_order', '=', True)]}"
+                                               class="o_onboard_cron_type"/>
+                                        <field name="bol_fbb_order_next_execution"
+                                               attrs="{'required': [('bol_auto_import_fbb_order', '=', True)]}"
+                                               class="o_onboard_cron_execution"/>
+                                        <field name="bol_fbb_order_import_user_id"
+                                               attrs="{'required': [('bol_auto_import_fbb_order', '=', True)]}"
+                                               class="o_onboard_cron_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </group>
+                <div class="o_horizontal_separator o_onboard_header font-weight-bold"
+                     invisible="context.get('is_calling_from_onboarding_panel', False) and not context.get('is_instance_exists', False)"
+                     attrs="{'invisible': ['|', ('bol_instance_id', '=', False), ('bol_fulfillment_by', 'in',['FBB'])]}">
+                    FBR Scheduler
+                </div>
+                <group invisible="context.get('is_calling_from_onboarding_panel', False) and not context.get('is_instance_exists', False)"
+                       attrs="{'invisible': ['|', ('bol_instance_id', '=', False), ('bol_fulfillment_by', 'in',['FBB'])]}">
+                    <div class="o_setting_left_pane">
+                        <div class="row mt16 o_settings_container o_onboard_padding">
+                            <div class="col-12 o_setting_box o_onboard_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="bol_auto_import_fbr_order" widget="boolean_toggle"
+                                           class="o_onboard_boolean_toggle"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span>
+                                        <h6>FBR Order Import</h6>
+                                    </span>
+                                    <div class="text-muted">
+                                        If marked, FBR Open Order will be automatically Imported and process by system
+                                        from BOl.
+                                    </div>
+                                    <br/>
+
+                                    <div class="o_onboard_cron_settings"
+                                         attrs="{'invisible': [('bol_auto_import_fbr_order', '=', False)]}">
+                                        <field name="bol_order_import_interval_number"
+                                               attrs="{'required': [('bol_auto_import_fbr_order', '=', True)]}"
+                                               class="o_onboard_cron_box"/>
+                                        <field name="bol_order_import_interval_type"
+                                               attrs="{'required': [('bol_auto_import_fbr_order', '=', True)]}"
+                                               class="o_onboard_cron_type"/>
+                                        <field name="bol_order_next_execution"
+                                               attrs="{'required': [('bol_auto_import_fbr_order', '=', True)]}"
+                                               class="o_onboard_cron_execution"/>
+                                        <field name="bol_order_import_user_id"
+                                               attrs="{'required': [('bol_auto_import_fbr_order', '=', True)]}"
+                                               class="o_onboard_cron_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o_setting_left_pane">
+                        <div class="row mt16 o_settings_container o_onboard_padding">
+                            <div class="col-12 o_setting_box o_onboard_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="bol_auto_update_order_status" widget="boolean_toggle"
+                                           class="o_onboard_boolean_toggle"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span>
+                                        <h6>FBR order Status update</h6>
+                                    </span>
+                                    <div class="text-muted">
+                                        If marked,FBR Open Order will be automatically Imported and process by system
+                                        from BOl.
+                                    </div>
+                                    <br/>
+
+                                    <div class="o_onboard_cron_settings"
+                                         attrs="{'invisible': [('bol_auto_update_order_status', '=', False)]}">
+                                        <field name="update_status_interval_number"
+                                               attrs="{'required': [('bol_auto_update_order_status', '=', True)]}"
+                                               class="o_onboard_cron_box"/>
+                                        <field name="update_status_interval_type"
+                                               attrs="{'required': [('bol_auto_update_order_status', '=', True)]}"
+                                               class="o_onboard_cron_type"/>
+                                        <field name="update_status_next_execution"
+                                               attrs="{'required': [('bol_auto_update_order_status', '=', True)]}"
+                                               class="o_onboard_cron_execution"/>
+                                        <field name="update_status_user_id"
+                                               attrs="{'required': [('bol_auto_update_order_status', '=', True)]}"
+                                               class="o_onboard_cron_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o_setting_left_pane">
+                        <div class="row mt16 o_settings_container o_onboard_padding">
+                            <div class="col-12 o_setting_box o_onboard_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="bol_auto_export_stock" widget="boolean_toggle"
+                                           class="o_onboard_boolean_toggle"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <span>
+                                        <h6>Stock Export</h6>
+                                    </span>
+                                    <div class="text-muted">
+                                        If marked, Product will be automatically exported by system from Odoo.
+                                    </div>
+                                    <br/>
+
+                                    <div class="o_onboard_cron_settings"
+                                         attrs="{'invisible': [('bol_auto_export_stock', '=', False)]}">
+                                        <field name="export_stock_interval_number"
+                                               attrs="{'required': [('bol_auto_export_stock', '=', True)]}"
+                                               class="o_onboard_cron_box"/>
+                                        <field name="export_stock_interval_type"
+                                               attrs="{'required': [('bol_auto_export_stock', '=', True)]}"
+                                               class="o_onboard_cron_type"/>
+                                        <field name="export_stock_next_execution"
+                                               attrs="{'required': [('bol_auto_export_stock', '=', True)]}"
+                                               class="o_onboard_cron_execution"/>
+                                        <field name="export_stock_user_id"
+                                               attrs="{'required': [('bol_auto_update_order_status', '=', True)]}"
+                                               class="o_onboard_cron_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </group>
+                <footer>
+                    <button string="Save" class="oe_highlight o_onboard_button" type="object"
+                            name="save_bol_cron_configuration"
+                            invisible="context.get('is_calling_from_onboarding_panel', False) and not context.get('is_instance_exists', False)"
+                            attrs="{'invisible': [('bol_instance_id', '=', False)]}"/>
+                    <button string="Cancel" special="cancel"
+                            class="oe_highlight o_onboard_button_white"/>
+                </footer>
+                <script>
+                    $('document').ready(function(){
+                    $('div.o_form_view.o_bol_ept').parents('div.modal-content').addClass('on_board_custom_form');
+                    });
+                </script>
+            </form>
+        </field>
+    </record>
+
+    <!--This action used open FBR AND FBB setting from instance panel view.-->
+    <record id="action_bol_fbr_and_fbb_instance_config"
+            model="ir.actions.act_window">
+        <field name="name">FBR and FBB Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'default_bol_instance_id': active_id}</field>
+        <field name="target">inline</field>
+    </record>
+
+    <!--This action used to set general configuration on panel view.-->
+    <record id="action_bol_general_config"
+            model="ir.actions.act_window">
+        <field name="name">General Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'default_bol_instance_id': active_id}</field>
+        <field name="target">inline</field>
+    </record>
+
+    <!--This action used to set cron configuration on panel view.-->
+    <record id="action_wizard_bol_cron_configuration_ept" model="ir.actions.act_window">
+        <field name="name">Scheduled Actions Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bol.cron.configuration.ept</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

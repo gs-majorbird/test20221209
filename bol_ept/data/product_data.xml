@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="bol_product_categ_services" model="product.category">
+        <field name="name">Bol Services</field>
+    </record>
+
+    <record id="product_product_bol_shipping_ept" model="product.product">
+        <field name="default_code">SHIP BOL</field>
+        <field name="list_price">0.0</field>
+        <field name="standard_price">0.0</field>
+        <field name="type">service</field>
+        <field name="name">Bol Shipping costs</field>
+        <field name="description_sale">Bol Shipping costs</field>
+        <field name="categ_id" ref="bol_product_categ_services"/>
+    </record>
+
+    <record id="ir_attachment_import_product_template_epts" model="ir.attachment">
+        <field name="name">import_bol_product_sample.csv</field>
+        <field name="datas" type="base64" file="bol_ept/data/import_bol_product_sample.csv"/>
+        <field name="res_model">bol.process.import.export.ept</field>
+        <field name="public">True</field>
+    </record>
+
+</odoo>

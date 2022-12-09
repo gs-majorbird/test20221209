@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="bol_offer_tree_view" model="ir.ui.view">
+        <field name="name">bol.offer.tree.view.ept</field>
+        <field name="model">bol.offer.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Bol Offer" sample="1">
+                <field name="name"/>
+                <field name="odoo_product_id"/>
+                <field name="fulfillment_by"/>
+                <field name="bol_instance_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="bol_product_status_search_view_ept">
+        <field name="name">Bol Product Search View</field>
+        <field name="model">bol.offer.ept</field>
+        <field name="arch" type="xml">
+            <search string="Bol Products">
+                <field name="name" string="Name" filter_domain="[('name','ilike',self)]"/>
+                <field name="reference_code" string="Reference Code"
+                       filter_domain="[('reference_code','ilike',self)]"/>
+                <field name="ean_product" string="EAN"
+                       filter_domain="[('ean_product','ilike',self)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Instance" domain="[]" name="bol_instance_id"
+                            context="{'group_by':'bol_instance_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="bol_offer_form_view" model="ir.ui.view">
+        <field name="name">bol.offer.ept.form.view</field>
+        <field name="model">bol.offer.ept</field>
+        <field name="arch" type="xml">
+            <form string="BOL Offer">
+                <sheet>
+                    <div class="oe_title">
+                        <label class="oe_edit_only" for="name" string="Name"/>
+                        <h1>
+                            <field name="name" class="oe_inline" required="1"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Product Info">
+                            <group>
+                                <group>
+                                    <field name="odoo_product_id"/>
+                                    <field name="ean_product"/>
+                                    <field name="is_publish"/>
+                                </group>
+                                <group>
+                                    <field name="bol_bsku"/>
+                                    <field name="reference_code"/>
+                                    <field name="product_description"/>
+                                </group>
+                                <group>
+                                    <field name="fix_stock_type"/>
+                                    <field name="fix_stock_value"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Bol Info">
+                            <group>
+                                <field name="bol_instance_id"/>
+                                <field name="fulfillment_by"/>
+                                <field name="exported_in_bol"/>
+                            </group>
+                            <group>
+                                <field name="bol_offer_id"/>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bol_offer_ept" model="ir.actions.act_window">
+        <field name="name">BOL Offer</field>
+        <field name="res_model">bol.offer.ept</field>
+        <field name="view_id" ref="bol_offer_tree_view"/>
+        <field name="help" type="html">
+            <div>
+                <br/>
+                <br/>
+                <br/>
+                <p>
+                    <b>There are no any Bol Product Created yet</b>
+                </p>
+                <p>
+                    You can't create Bol products directly from here. In order to
+                    create products for Bol,
+                    You need to go to menu
+                    <b>Sales
+                        <i class="fa fa-angle-double-right"/>
+                        Products
+                        <i class="fa fa-angle-double-right"/>
+                        Products
+                    </b>
+                    and in list view of Product, select one or more products which you
+                    want to sync with to Bol.com
+                    At the top side, under the "More"
+                    section, you will find an option
+                    <b>"Prepare Product for Export"</b>
+                    .
+                    Clicking on that option, you will be asked to select Bol.com
+                    Instance.After those products successfully prepared for Bol.com,
+                    you can see all of them over here in this menu.
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <menuitem id="bol_offer_menu_core" name="Products"
+              parent="bol_ept.bol_main_menu" sequence="3"/>
+
+    <menuitem id="bol_offer_menu_core_ept" name="Products"
+              parent="bol_offer_menu_core" sequence="1"
+              action="action_bol_offer_ept"/>
+</odoo>

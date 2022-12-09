@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="bol_delivery_carrier_code_ept_form" model="ir.ui.view">
+        <field name="name">bol.delivery.carrier.code.ept.form</field>
+        <field name="model">bol.delivery.carrier.code.ept</field>
+        <field name="arch" type="xml">
+            <form string="Bol Delivery Code">
+                <sheet string="Bol Delivery Code">
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="bol_delivery_carrier_code_ept_tree" model="ir.ui.view">
+        <field name="name">bol.delivery.carrier.code.ept.tree</field>
+        <field name="model">bol.delivery.carrier.code.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Bol Delivery Code" editable="top" edit="false" create="false">
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="bol_delivery_carrier_code_ept_search" model="ir.ui.view">
+        <field name="name">bol.delivery.carrier.code.ept.search</field>
+        <field name="model">bol.delivery.carrier.code.ept</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <field name="code"/>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="bol_delivery_carrier_code_ept_action" model="ir.actions.act_window">
+        <field name="name">Bol Delivery Carrier Code</field>
+        <field name="res_model">bol.delivery.carrier.code.ept</field>
+        <field name="view_id" ref="bol_delivery_carrier_code_ept_tree"/>
+        <field name="search_view_id" ref="bol_delivery_carrier_code_ept_search"/>
+    </record>
+
+    <menuitem id="menu_bol_delivery_carrier_code_ept" name="Delivery Carrier Code"
+              action="bol_ept.bol_delivery_carrier_code_ept_action"
+              parent="bol_ept.menu_bol_configuration_ept" sequence="5"/>
+</odoo>

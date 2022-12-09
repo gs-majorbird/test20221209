@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--Wizard view of prepre product for export.-->
+    <record id="export_product_to_bol_ept" model="ir.ui.view">
+        <field name="name">bol.export.products.view.ept</field>
+        <field name="model">bol.prepare.product.for.export.ept</field>
+        <field name="arch" type="xml">
+            <form string="Export Products">
+                <sheet>
+                    <group name="bol_export_products">
+                        <group>
+                            <field name="offer_fulfilled_by" required="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <div style="color:#000000" id="export_products_note">
+                            <p class="alert alert-warning" role="alert">
+                                <u>
+                                    <h3 style="font-weight:bold;color:#7d5a29">Note :</h3>
+                                </u>
+                                <b>
+                                    <ol>
+                                        <li>
+                                            Please do not make change in 'PRODUCT_ID' column in CSV file.
+                                        </li>
+                                        <li>
+                                            Products without Internal Reference (SKU) will not be exported.
+                                        </li>
+                                        <li>
+                                            You can import CSV file here: Bol => Processes => Bol Operations.
+                                            Select the instance and Operation > Map Offers From CSV.
+                                        </li>
+                                    </ol>
+                                </b>
+                            </p>
+                        </div>
+                    </group>
+
+                    <footer>
+                        <button name="prepare_product_for_export" string="Export" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--Action for prepare product for export-->
+    <record id="action_bol_export_odoo_products_ept" model="ir.actions.act_window">
+        <field name="name">Bol - Export Products</field>
+        <field name="res_model">bol.prepare.product.for.export.ept</field>
+        <field name="binding_model_id" ref="product.model_product_product"/>
+        <field name="target">new</field>
+        <field name="view_id" ref="bol_ept.export_product_to_bol_ept"/>
+        <field name="groups_id" eval="[(4, ref('bol_ept.group_bol_user_ept'))]"/>
+    </record>
+
+</odoo>

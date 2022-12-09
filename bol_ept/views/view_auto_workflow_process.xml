@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--Action of auto invoice workflow -->
+    <record id="action_bol_sale_workflow_process"
+            model="ir.actions.act_window">
+        <field name="name">Auto Workflow</field>
+        <field name="res_model">sale.workflow.process.ept</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="bol_sale_workflow_process_menuitem"
+              name="Sale Auto Workflow" parent="bol_ept.menu_bol_configuration_ept"
+              action="action_bol_sale_workflow_process" sequence="6"/>
+
+</odoo>
